@@ -1,0 +1,15 @@
+displayName = Crit Sound Effects
+author = Rai
+version = 1.2.1.4
+homepage = https://forums.terraria.org/index.php?threads/crit-sound-effects.65807/
+
+hideCode = false
+hideResources = true
+includeSource = true
+includePDB = false
+
+buildignore = *.dni, *.md, *.gitattributes
+
+side = Client
+weakReferences = FKTModSettings
+dllReferences = Bass.Net

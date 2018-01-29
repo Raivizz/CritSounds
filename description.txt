@@ -4,6 +4,7 @@ Current features include:
 • Randomized, unique sound effects for dealing and taking critical damage both with melee weaponry and projectiles,
 • Categorized sound effects for all different projectiles!
 • Original crit sounds for 8 different projectile categories (as well as stabbing with melee weaponry)!
+• Possibility to easily add your own sounds!
 • Easter eggs!
 • Mod Settings Configurator (by Flashkirby99) support.
 

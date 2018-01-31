@@ -1,10 +1,10 @@
 displayName = Crit Sound Effects
 author = Rai
-version = 1.2.2.0
+version = 1.2.2.1
 homepage = https://forums.terraria.org/index.php?threads/crit-sound-effects.65807/
 
 hideCode = false
-hideResources = true
+hideResources = false
 includeSource = true
 includePDB = false
 

@@ -114,6 +114,7 @@ namespace CritSounds
 
                 Configuration.Get("BASSDeviceFrequency", ref BASSDeviceFrequency);
 
+                Configuration.Get("MeleeStab_Volume", ref MeleeStab_Volume);
                 Configuration.Get("TypeArrow_Volume", ref TypeArrow_Volume);
                 Configuration.Get("TypeThrowing_Volume", ref TypeThrowing_Volume);
                 Configuration.Get("TypeSpell_Volume", ref TypeSpell_Volume);
@@ -172,7 +173,6 @@ namespace CritSounds
 
             Configuration.Put("BASSDeviceFrequency", BASSDeviceFrequency);
 
-            Configuration.Get("MeleeStab_Volume", MeleeStab_Volume);
             Configuration.Put("TypeArrow_Volume", TypeArrow_Volume);
             Configuration.Put("TypeThrowing_Volume", TypeThrowing_Volume);
             Configuration.Put("TypeSpell_Volume", TypeSpell_Volume);
@@ -182,9 +182,9 @@ namespace CritSounds
             Configuration.Put("TypeMisc_Volume", TypeMisc_Volume);
             Configuration.Put("TypeUnknown_Volume", TypeUnknown_Volume);
 
-            Configuration.Get("Egg01_Volume", Egg01_Volume);
+            Configuration.Put("Egg01_Volume", Egg01_Volume);
 
-            Configuration.Get("Mod_MeleeStab_Volume", Mod_MeleeStab_Volume);
+            Configuration.Put("Mod_MeleeStab_Volume", Mod_MeleeStab_Volume);
             Configuration.Put("Mod_TypeArrow_Volume", Mod_TypeArrow_Volume);
             Configuration.Put("Mod_TypeThrowing_Volume", Mod_TypeThrowing_Volume);
             Configuration.Put("Mod_TypeSpell_Volume", Mod_TypeSpell_Volume);

@@ -47,7 +47,6 @@ namespace CritSounds
             setting.AddComment("Welcome to the Critical Tweakery Menu!");
 
             setting.AddBool("MeleeStabCrits_Enabled", "Enable crit sounds for melee stabs", false);
-            setting.AddFloat("MeleeStab_Volume", "Change the volume of melee stab crits", 0f, 1f, false);
             setting.AddBool("ProjectileCrits_Enabled", "Enable projectile crits", false);
 
             setting.AddComment("If projectile crits are enabled, the settings below can be used to toggle and change the volume of crit sounds for specific projectile types");
@@ -63,6 +62,7 @@ namespace CritSounds
 
             //Vanilla volume
             setting.AddComment("Pack-in sounds - volume section");
+            setting.AddFloat("MeleeStab_Volume", "Change the volume of melee stab crits", 0f, 1f, false);
             setting.AddFloat("TypeArrow_Volume", "Changes the volume of arrow crits", 0f, 1f, false);
             setting.AddFloat("TypeThrowing_Volume", "Change the volume of throw-able crits", 0f, 1f, false);
             setting.AddFloat("TypeSpell_Volume", "Change the volume of magic crits", 0f, 1f, false);

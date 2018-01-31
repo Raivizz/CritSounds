@@ -173,6 +173,7 @@ namespace CritSounds
 
             Configuration.Put("BASSDeviceFrequency", BASSDeviceFrequency);
 
+            Configuration.Put("MeleeStab_Volume", MeleeStab_Volume);
             Configuration.Put("TypeArrow_Volume", TypeArrow_Volume);
             Configuration.Put("TypeThrowing_Volume", TypeThrowing_Volume);
             Configuration.Put("TypeSpell_Volume", TypeSpell_Volume);

@@ -31,6 +31,7 @@ namespace CritSounds
 
             csh.CheckDirectoriesForMods();
 
+            //Downloads bass.dll if it doesn't exist, otherwise initializes it.
             if (!File.Exists("bass.dll"))
             {
                 client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/bass.dll", "bass.dll");

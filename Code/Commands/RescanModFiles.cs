@@ -30,7 +30,7 @@ namespace CritSounds.Commands
         {
             CritSFXHandler checkobject = new CritSFXHandler();
             checkobject.CheckDirectoriesForMods();
-            Main.NewText("Directories scanned succesfully.");
+            Main.NewText("Custom sound directories scanned succesfully!");
         }
     }
 }

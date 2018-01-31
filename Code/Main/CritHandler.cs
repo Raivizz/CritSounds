@@ -29,6 +29,7 @@ namespace CritSounds
         //Future updates may include either more sounds or more advanced scripting shenanigans.
         //Anyone is free to use this code for their own needs.
 
+        //Defines lists which are later used to contain file paths of all custom sounds
         public List<string> MSCFiles;
 
         public List<string> TACFiles;
@@ -50,6 +51,8 @@ namespace CritSounds
         public void CheckDirectoriesForMods()
         {
             CritModdingFramework cmf_check = new CritModdingFramework();
+
+            //Fills the previously-defined lists with path files to all custom sounds
             MSCFiles = new List<string>(Directory.GetFiles(cmf_check.MSC_P));
             TACFiles = new List<string>(Directory.GetFiles(cmf_check.TAC_P));
             TTCFiles = new List<string>(Directory.GetFiles(cmf_check.TTC_P));
@@ -64,6 +67,9 @@ namespace CritSounds
         override public void OnEnterWorld(Player player)
         {
             CheckDirectoriesForMods();
+
+            //Old debugging stuff from experimental version 1.2.0 of Crit Sounds
+            //Left here in case it'll be useful again.
 
             //         if (File.Exists("bassopus.dll") && Config.BASSAddon_EnableOpusAddon)
             //         {
@@ -519,6 +525,7 @@ namespace CritSounds
 
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
         {
+            //Frees BASS resources whenever the player character dies
             Bass.BASS_Free();
             return true;
         }

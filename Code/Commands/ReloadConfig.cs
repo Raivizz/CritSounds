@@ -29,7 +29,7 @@ namespace CritSounds.Commands
         public override void Action(CommandCaller caller, string input, string[] args)
         {
             Config.Load();
-            Main.NewText("Configuration file reloaded succesfully.");
+            Main.NewText("Crit Sounds' configuration file reloaded succesfully!");
         }
     }
 }

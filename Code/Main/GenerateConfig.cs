@@ -10,46 +10,73 @@ namespace CritSounds
     {
         /// <summary>Enable crit sounds on melee stabs.</summary>
         public static bool MeleeStabCrits_Enabled = true;
+        /// <summary>Changes the volume of melee stabbing crits</summary>
         public static float MeleeStab_Volume = 1f;
 
         /// <summary>Enable projectile crit handlers.</summary>
         public static bool ProjectileCrits_Enabled = true;
+
         /// <summary>Enables crit sounds for arrow projectiles.</summary>
         public static bool ProjectileCrits_TypeArrow_Enabled = true;
+        /// <summary>Changes the volume of arrow projectiles or modded ranged weapons</summary>
         public static float TypeArrow_Volume = 1f;
+
         /// <summary>Enables crit sounds for Throwing projectiles.</summary>
         public static bool ProjectileCrits_TypeThrowing_Enabled = true;
+        /// <summary>Changes the volume of throw-able weapons or modded throwing-type weapons</summary>
         public static float TypeThrowing_Volume = 1f;
+
         /// <summary>Enables crit sounds for magic projectiles.</summary>
         public static bool ProjectileCrits_TypeSpell_Enabled = true;
+        /// <summary>Changes the volume of magic-based weapons</summary>
         public static float TypeSpell_Volume = 1f;
+
         /// <summary>Enables crit sounds for bullet projectiles.</summary>
         public static bool ProjectileCrits_TypeBullet_Enabled = true;
+        /// <summary>Changes the volume of bullet-based vanilla weapons</summary>
         public static float TypeBullet_Volume = 1f;
+
         /// <summary>Enables crit sounds for melee projectiles and weaponry.</summary>
         public static bool ProjectileCrits_TypeMelee_Enabled = true;
+        /// <summary>Changes the volume of melee-based ranged weaponry, yoyos, or modded melee-damage-type weapons</summary>
         public static float TypeMelee_Volume = 1f;
+
         /// <summary>Enables crit sounds for summoned entities.</summary>
         public static bool ProjectileCrits_TypeSummon_Enabled = true;
+        /// <summary>Changes the volume of summoned minions and sentries</summary>
         public static float TypeSummon_Volume = 1f;
+
         /// <summary>Enables crit sounds for miscellaneous projectiles.</summary>
         public static bool ProjectileCrits_TypeMisc_Enabled = true;
+        /// <summary>Changes the volume of miscellaneous projectiles, such as seeds and others.</summary>
         public static float TypeMisc_Volume = 1f;
+
         /// <summary>Enables crit sounds for undefined projectiles.</summary>
         public static bool ProjectileCrits_TypeUnknown_Enabled = true;
+        /// <summary>Changes the volume of undefined projectiles, mostly modded weapons with custom damage types or modded summoner weapons.</summary>
         public static float TypeUnknown_Volume = 1f;
 
+        /// <summary>Changes the volume for the Egg 01 batch. If you think I'm gonna spoil it here for ya, you're wrong. Then again, you are reading the code, so you might as well just find where this is looked up and just trace the item ID.</summary>
         public static float Egg01_Volume = 1f;
 
-        //Mod volume
+        //Custom sound volume
+        /// <summary>Change the volume of custom melee stabbing crit sounds.</summary>
         public static float Mod_MeleeStab_Volume = 1f;
+        /// <summary>Change the volume of custom arrow-based weapon crit sounds.</summary>
         public static float Mod_TypeArrow_Volume = 1f;
+        /// <summary>Change the volume of custom throw-able weaponry crit sounds.</summary>
         public static float Mod_TypeThrowing_Volume = 1f;
+        /// <summary>Change the volume of custom magic-based weaponry crit sounds.</summary>
         public static float Mod_TypeSpell_Volume = 1f;
+        /// <summary>Change the volume of custom bullet-based weaponry crit sounds.</summary>
         public static float Mod_TypeBullet_Volume = 1f;
+        /// <summary>Change the volume of custom melee-based crit sounds.</summary>
         public static float Mod_TypeMelee_Volume = 1f;
+        /// <summary>Change the volume of custom summoned entity crit sounds</summary>
         public static float Mod_TypeSummon_Volume = 1f;
+        /// <summary>Change the volume of custom miscellaneous projectile crit sounds.</summary>
         public static float Mod_TypeMisc_Volume = 1f;
+        /// <summary>Change the volume of unknown projectile crit sounds.</summary>
         public static float Mod_TypeUnknown_Volume = 1f;
 
         /// <summary>Changes the sound frequency used to initialize BASS. Only change if you know what you're doing!</summary>

@@ -164,10 +164,10 @@ namespace CritSounds
                             if (TACFiles.Count == 0)
                             {
                                 int ARRand_NoMod = new Random().Next(1, 4);
-                                if (ARRand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit01"), Config.TypeArrow_Volume); Main.NewText((int)target.position.X); Main.NewText("  " + (int)target.position.Y); }
-                                if (ARRand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit02"), Config.TypeArrow_Volume); Main.NewText((int)target.position.X); Main.NewText("  " + (int)target.position.Y); }
-                                if (ARRand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit03"), Config.TypeArrow_Volume); Main.NewText((int)target.position.X); Main.NewText("  " + (int)target.position.Y); }
-                                if (ARRand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit04"), Config.TypeArrow_Volume); Main.NewText((int)target.position.X); Main.NewText("  " + (int)target.position.Y); }
+                                if (ARRand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit01"), Config.TypeArrow_Volume); }
+                                if (ARRand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit02"), Config.TypeArrow_Volume); }
+                                if (ARRand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit03"), Config.TypeArrow_Volume); }
+                                if (ARRand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit04"), Config.TypeArrow_Volume); }
                             }
                             if (TACFiles.Count != 0)
                             {

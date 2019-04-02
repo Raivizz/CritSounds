@@ -31,21 +31,13 @@ namespace CritSounds
 
         //Defines lists which are later used to contain file paths of all custom sounds
         public List<string> MSCFiles;
-
         public List<string> TACFiles;
-
         public List<string> TTCFiles;
-
         public List<string> TSCFiles;
-
         public List<string> TBPFiles;
-
         public List<string> TMPFiles;
-
         public List<string> TSuCFiles;
-
         public List<string> TMiCFiles;
-
         public List<string> TUCFiles;
 
         public void CheckDirectoriesForMods()
@@ -53,15 +45,15 @@ namespace CritSounds
             CritModdingFramework cmf_check = new CritModdingFramework();
 
             //Fills the previously-defined lists with path files to all custom sounds
-            MSCFiles = new List<string>(Directory.GetFiles(cmf_check.MSC_P));
-            TACFiles = new List<string>(Directory.GetFiles(cmf_check.TAC_P));
-            TTCFiles = new List<string>(Directory.GetFiles(cmf_check.TTC_P));
-            TSCFiles = new List<string>(Directory.GetFiles(cmf_check.TSC_P));
-            TBPFiles = new List<string>(Directory.GetFiles(cmf_check.TBP_P));
-            TMPFiles = new List<string>(Directory.GetFiles(cmf_check.TMP_P));
+            MSCFiles  = new List<string>(Directory.GetFiles(cmf_check.MSC_P));
+            TACFiles   = new List<string>(Directory.GetFiles(cmf_check.TAC_P));
+            TTCFiles   = new List<string>(Directory.GetFiles(cmf_check.TTC_P));
+            TSCFiles   = new List<string>(Directory.GetFiles(cmf_check.TSC_P));
+            TBPFiles   = new List<string>(Directory.GetFiles(cmf_check.TBP_P));
+            TMPFiles  = new List<string>(Directory.GetFiles(cmf_check.TMP_P));
             TSuCFiles = new List<string>(Directory.GetFiles(cmf_check.TSuC_P));
             TMiCFiles = new List<string>(Directory.GetFiles(cmf_check.TMiC_P));
-            TUCFiles = new List<string>(Directory.GetFiles(cmf_check.TUC_P));
+            TUCFiles   = new List<string>(Directory.GetFiles(cmf_check.TUC_P));
         }
 
         override public void OnEnterWorld(Player player)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -39,40 +40,26 @@ namespace CritSounds
         public List<string> TSuCFiles;
         public List<string> TMiCFiles;
         public List<string> TUCFiles;
-
+	
         public void CheckDirectoriesForMods()
         {
             CritModdingFramework cmf_check = new CritModdingFramework();
 
             //Fills the previously-defined lists with path files to all custom sounds
-            MSCFiles  = new List<string>(Directory.GetFiles(cmf_check.MSC_P));
-            TACFiles   = new List<string>(Directory.GetFiles(cmf_check.TAC_P));
-            TTCFiles   = new List<string>(Directory.GetFiles(cmf_check.TTC_P));
-            TSCFiles   = new List<string>(Directory.GetFiles(cmf_check.TSC_P));
-            TBPFiles   = new List<string>(Directory.GetFiles(cmf_check.TBP_P));
-            TMPFiles  = new List<string>(Directory.GetFiles(cmf_check.TMP_P));
+            MSCFiles = new List<string>(Directory.GetFiles(cmf_check.MSC_P));
+            TACFiles = new List<string>(Directory.GetFiles(cmf_check.TAC_P));
+            TTCFiles = new List<string>(Directory.GetFiles(cmf_check.TTC_P));
+            TSCFiles = new List<string>(Directory.GetFiles(cmf_check.TSC_P));
+            TBPFiles = new List<string>(Directory.GetFiles(cmf_check.TBP_P));
+            TMPFiles = new List<string>(Directory.GetFiles(cmf_check.TMP_P));
             TSuCFiles = new List<string>(Directory.GetFiles(cmf_check.TSuC_P));
             TMiCFiles = new List<string>(Directory.GetFiles(cmf_check.TMiC_P));
-            TUCFiles   = new List<string>(Directory.GetFiles(cmf_check.TUC_P));
+            TUCFiles = new List<string>(Directory.GetFiles(cmf_check.TUC_P));
         }
 
         override public void OnEnterWorld(Player player)
         {
             CheckDirectoriesForMods();
-
-            //Old debugging stuff from experimental version 1.2.0 of Crit Sounds
-            //Left here in case it'll be useful again.
-
-            //         if (File.Exists("bassopus.dll") && Config.BASSAddon_EnableOpusAddon)
-            //         {
-            //             int opusLoad = Bass.BASS_PluginLoad("bassopus.dll");
-            //
-            //             Main.NewText("opusLoad integer currently holds the value " + opusLoad);
-            //             Main.NewText(Bass.BASS_ErrorGetCode());
-            //             string TestFile = (Main.SavePath + Path.DirectorySeparatorChar.ToString() + "Crit Sounds" + Path.DirectorySeparatorChar.ToString() + "Custom" + Path.DirectorySeparatorChar.ToString() + "Testing" + Path.DirectorySeparatorChar.ToString() + "GameComplete.opus");
-            //             int TestFileStream = Bass.BASS_StreamCreateFile(TestFile, 0, 0, BASSFlag.BASS_DEFAULT);
-            //             Bass.BASS_ChannelPlay(TestFileStream, false);
-            //         }
         }
 
         int ProjectileType = 0;

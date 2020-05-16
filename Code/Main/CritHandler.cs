@@ -1,26 +1,24 @@
-﻿using System;
-using System.IO;
+﻿using ManagedBass;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria.ModLoader.Audio;
-using Un4seen.Bass;
 
 namespace CritSounds
 {
     public class StreamType
     {
-        public int MSC_Stream;
-        public int TAC_Stream;
-        public int TTC_Stream;
-        public int TSC_Stream;
-        public int TBP_Stream;
-        public int TMP_Stream;
-        public int TSuC_Stream;
-        public int TMiC_Stream;
-        public int TUC_Stream;
+        internal int MSC_Stream;
+        internal int TAC_Stream;
+        internal int TTC_Stream;
+        internal int TSC_Stream;
+        internal int TBP_Stream;
+        internal int TMP_Stream;
+        internal int TSuC_Stream;
+        internal int TMiC_Stream;
+        internal int TUC_Stream;
     }
 
     public class CritSFXHandler : ModPlayer
@@ -30,16 +28,16 @@ namespace CritSounds
         //Anyone is free to use this code for their own needs.
 
         //Defines lists which are later used to contain file paths of all custom sounds
-        public List<string> MSCFiles;
-        public List<string> TACFiles;
-        public List<string> TTCFiles;
-        public List<string> TSCFiles;
-        public List<string> TBPFiles;
-        public List<string> TMPFiles;
-        public List<string> TSuCFiles;
-        public List<string> TMiCFiles;
-        public List<string> TUCFiles;
-	
+        internal List<string> MSCFiles;
+        internal List<string> TACFiles;
+        internal List<string> TTCFiles;
+        internal List<string> TSCFiles;
+        internal List<string> TBPFiles;
+        internal List<string> TMPFiles;
+        internal List<string> TSuCFiles;
+        internal List<string> TMiCFiles;
+        internal List<string> TUCFiles;
+
         public void CheckDirectoriesForMods()
         {
             CritModdingFramework cmf_check = new CritModdingFramework();
@@ -56,67 +54,149 @@ namespace CritSounds
             TUCFiles = new List<string>(Directory.GetFiles(cmf_check.TUC_P));
         }
 
-        override public void OnEnterWorld(Player player)
+        public override void OnEnterWorld(Player player)
         {
             CheckDirectoriesForMods();
         }
 
-        int ProjectileType = 0;
+        private int ProjectileType = 0;
+
+        //The amount of default sound effects for unmodded crit types for magical number minimising
+        private readonly int MSC_SFXCount = 4;
+        private readonly int Egg1_SFXCount = 18;
+        private readonly int TAC_SFXCount = 4;
+        private readonly int TTC_SFXCount = 4;
+        private readonly int TSC_SFXCount = 4;
+        private readonly int TBP_SFXCount = 5;
+        private readonly int TMP_SFXCount = 4;
+        private readonly int TSuC_SFXCount = 4;
+        private readonly int TMiC_SFXCount = 6;
+        private readonly int TUC_SFXCount = 5;
 
         //Melee crits
         //Plays when a player deals a crit to a hostile NPC with a melee weapon.
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
         {
+            if (item is null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            if (target is null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
+
             StreamType st = new StreamType();
 
-            if ((crit == true) && (Config.MeleeStabCrits_Enabled == true) && (item.type != 1305))
+            if (crit == true && Config.MeleeStabCrits_Enabled == true && item.type != 1305)
             {
                 //No mod files detected
                 if (MSCFiles.Count == 0)
                 {
-                    int MSRand_NoMod = new Random().Next(1, 4);
-                    if (MSRand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit01"), Config.MeleeStab_Volume); }
-                    if (MSRand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit02"), Config.MeleeStab_Volume); }
-                    if (MSRand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit03"), Config.MeleeStab_Volume); }
-                    if (MSRand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit04"), Config.MeleeStab_Volume); }
+
+                    if (new Random().Next(MSC_SFXCount) == 1)
+                    {
+                        _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit01"), volumeScale: Config.MeleeStab_Volume);
+                    }
+                    if (new Random().Next(MSC_SFXCount) == 2)
+                    {
+                        _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit02"), volumeScale: Config.MeleeStab_Volume);
+                    }
+                    if (new Random().Next(MSC_SFXCount) == 3)
+                    {
+                        _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit03"), volumeScale: Config.MeleeStab_Volume);
+                    }
+                    if (new Random().Next(MSC_SFXCount) == 4)
+                    {
+                        _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit04"), volumeScale: Config.MeleeStab_Volume);
+                    }
                 }
 
                 //At least one mod file exists.
-                if (MSCFiles.Count != 0)
+                if (MSCFiles != null || MSCFiles.Count != 0)
                 {
-                    int MSRand_Mod = new Random().Next(0, MSCFiles.Count);
-                    string MSRand_Result = MSCFiles[MSRand_Mod];
-
-                    st.MSC_Stream = Bass.BASS_StreamCreateFile(MSRand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
-
-                    Bass.BASS_ChannelSetAttribute(st.MSC_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_MeleeStab_Volume);
-
-                    Bass.BASS_ChannelPlay(st.MSC_Stream, false);
+                    st.MSC_Stream = Bass.CreateStream(MSCFiles[new Random().Next(MSCFiles.Count)]);
+                    _ = Bass.ChannelPlay(st.MSC_Stream, false);
                 }
+                return;
             }
 
             //Egg 01
-            if ((crit == true) && (Config.MeleeStabCrits_Enabled == true) && (item.type == 1305))
+            if (crit == true && Config.MeleeStabCrits_Enabled == true && item.type == 1305)
             {
-                int Egg1Rand = new Random().Next(1, 18);
-                if (Egg1Rand == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_01"), Config.Egg01_Volume); }
-                if (Egg1Rand == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_02"), Config.Egg01_Volume); }
-                if (Egg1Rand == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_03"), Config.Egg01_Volume); }
-                if (Egg1Rand == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_04"), Config.Egg01_Volume); }
-                if (Egg1Rand == 5) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_05"), Config.Egg01_Volume); }
-                if (Egg1Rand == 6) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_06"), Config.Egg01_Volume); }
-                if (Egg1Rand == 7) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_07"), Config.Egg01_Volume); }
-                if (Egg1Rand == 8) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_08"), Config.Egg01_Volume); }
-                if (Egg1Rand == 9) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_09"), Config.Egg01_Volume); }
-                if (Egg1Rand == 10) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_10"), Config.Egg01_Volume); }
-                if (Egg1Rand == 11) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_11"), Config.Egg01_Volume); }
-                if (Egg1Rand == 12) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_12"), Config.Egg01_Volume); }
-                if (Egg1Rand == 13) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_13"), Config.Egg01_Volume); }
-                if (Egg1Rand == 14) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_14"), Config.Egg01_Volume); }
-                if (Egg1Rand == 15) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_15"), Config.Egg01_Volume); }
-                if (Egg1Rand == 16) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_16"), Config.Egg01_Volume); }
-                if (Egg1Rand == 17) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_17"), Config.Egg01_Volume); }
-                if (Egg1Rand == 18) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_18"), Config.Egg01_Volume); }
+                if (new Random().Next(Egg1_SFXCount) == 1)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_01"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 2)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_02"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 3)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_03"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 4)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_04"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 5)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_05"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 6)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_06"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 7)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_07"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 8)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_08"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 9)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_09"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 10)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_10"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 11)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_11"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 12)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_12"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 13)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_13"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 14)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_14"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 15)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_15"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 16)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_16"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 17)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_17"), volumeScale: Config.Egg01_Volume);
+                }
+                if (new Random().Next(Egg1_SFXCount) == 18)
+                {
+                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_18"), volumeScale: Config.Egg01_Volume);
+                }
             }
         }
 
@@ -125,13 +205,23 @@ namespace CritSounds
         //Starting with version 1.1.0, projectiles are now categorized and have respective sounds assigned.
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
         {
+
             StreamType st = new StreamType();
+            if (proj is null)
+            {
+                throw new ArgumentNullException(nameof(proj));
+            }
+
+            if (target is null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
 
             if ((crit == true) && (Config.ProjectileCrits_Enabled == true))
             {
                 ProjCheck pc = new ProjCheck();
+                ProjectileType = pc.ProjIDExists(proj.type);
 
-                ProjectileType = (pc.ProjIDExists(proj.type));
                 switch (ProjectileType)
                 {
                     //Arrows
@@ -141,31 +231,38 @@ namespace CritSounds
                         {
                             if (TACFiles.Count == 0)
                             {
-                                int ARRand_NoMod = new Random().Next(1, 4);
-                                if (ARRand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit01"), Config.TypeArrow_Volume); }
-                                if (ARRand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit02"), Config.TypeArrow_Volume); }
-                                if (ARRand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit03"), Config.TypeArrow_Volume); }
-                                if (ARRand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit04"), Config.TypeArrow_Volume); }
+                                if (new Random().Next(TTC_SFXCount) == 1)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit01"), volumeScale: Config.TypeArrow_Volume);
+                                }
+                                if (new Random().Next(TTC_SFXCount) == 2)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit02"), volumeScale: Config.TypeArrow_Volume);
+                                }
+                                if (new Random().Next(TTC_SFXCount) == 3)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit03"), volumeScale: Config.TypeArrow_Volume);
+                                }
+                                if (new Random().Next(TTC_SFXCount) == 4)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit04"), volumeScale: Config.TypeArrow_Volume);
+                                }
                             }
                             if (TACFiles.Count != 0)
                             {
-                                //Randomly selects one of the sounds in the corresponding directory
-                                int ARRand_Mod = new Random().Next(0, TACFiles.Count);
-                                string ARRand_Result = TACFiles[ARRand_Mod];
-
-                                //Creates a BASS stream with the randomized string selected from the list.
-                                st.TAC_Stream = Bass.BASS_StreamCreateFile(ARRand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                _ = new StreamType().TAC_Stream;
+                                st.TAC_Stream = Bass.CreateStream(TACFiles[new Random().Next(TACFiles.Count)]);
 
                                 //Sets channel's volume, defined by the user using config file or Mod Settings Configurator
-                                Bass.BASS_ChannelSetAttribute(st.TAC_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeArrow_Volume);
-
-                                //Calculates pan
-                                int Difference = ((int)target.position.X - (int)player.position.X);
-                                float PanSet = (Difference / (Main.screenWidth / 2));
-                                Bass.BASS_ChannelSetAttribute(st.TAC_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
+                                Bass.ChannelSetAttribute(st.TAC_Stream, ChannelAttribute.Volume, Config.Mod_TypeArrow_Volume);
+                                //Calculates and sets channel's pan
+                                Bass.ChannelSetAttribute(st.TAC_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
                                 //Plays the configured stream.
-                                Bass.BASS_ChannelPlay(st.TAC_Stream, false);
+                                Bass.ChannelPlay(st.TAC_Stream);
+                            }
+                            else
+                            {
+                                return;
                             }
                         }
                         break;
@@ -177,25 +274,35 @@ namespace CritSounds
                         {
                             if (TTCFiles.Count == 0)
                             {
-                                int THRand_NoMod = new Random().Next(1, 4);
-                                if (THRand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit01"), Config.TypeThrowing_Volume); }
-                                if (THRand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit02"), Config.TypeThrowing_Volume); }
-                                if (THRand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit03"), Config.TypeThrowing_Volume); }
-                                if (THRand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit04"), Config.TypeThrowing_Volume); }
+                                if (new Random().Next(TTC_SFXCount) == 1)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit01"), volumeScale: Config.TypeThrowing_Volume);
+                                }
+                                if (new Random().Next(TTC_SFXCount) == 2)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit02"), volumeScale: Config.TypeThrowing_Volume);
+                                }
+                                if (new Random().Next(TTC_SFXCount) == 3)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit03"), volumeScale: Config.TypeThrowing_Volume);
+                                }
+                                if (new Random().Next(TTC_SFXCount) == 4)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit04"), volumeScale: Config.TypeThrowing_Volume);
+                                }
                             }
                             if (TTCFiles.Count != 0)
                             {
-                                int THRand_Mod = new Random().Next(0, TTCFiles.Count);
-                                string THRand_Result = TACFiles[THRand_Mod];
-                                st.TTC_Stream = Bass.BASS_StreamCreateFile(THRand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                _ = new StreamType().TTC_Stream;
+                                st.TTC_Stream = Bass.CreateStream(TTCFiles[new Random().Next(TTCFiles.Count)]);
 
-                                Bass.BASS_ChannelSetAttribute(st.TTC_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeThrowing_Volume);
-
-                                int Difference = ((int)target.position.X - (int)player.position.X);
-                                float PanSet = (Difference / (Main.screenWidth / 2));
-                                Bass.BASS_ChannelSetAttribute(st.TTC_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
-                                Bass.BASS_ChannelPlay(st.TTC_Stream, false);
+                                Bass.ChannelSetAttribute(st.TTC_Stream, ChannelAttribute.Volume, Config.Mod_TypeThrowing_Volume);
+                                Bass.ChannelSetAttribute(st.TTC_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
+                                Bass.ChannelPlay(st.TTC_Stream);
+                            }
+                            else
+                            {
+                                return;
                             }
                         }
                         break;
@@ -207,27 +314,43 @@ namespace CritSounds
                         {
                             if (TSCFiles.Count == 0)
                             {
-                                int SPRand_NoMod = new Random().Next(1, 6);
-                                if (SPRand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit01"), Config.TypeSpell_Volume); }
-                                if (SPRand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit02"), Config.TypeSpell_Volume); }
-                                if (SPRand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit03"), Config.TypeSpell_Volume); }
-                                if (SPRand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit04"), Config.TypeSpell_Volume); }
-                                if (SPRand_NoMod == 5) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit05"), Config.TypeSpell_Volume); }
-                                if (SPRand_NoMod == 6) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit06"), Config.TypeSpell_Volume); }
+                                if (new Random().Next(TSC_SFXCount) == 1)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit01"), volumeScale: Config.TypeSpell_Volume);
+                                }
+                                if (new Random().Next(TSC_SFXCount) == 2)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit02"), volumeScale: Config.TypeSpell_Volume);
+                                }
+                                if (new Random().Next(TSC_SFXCount) == 3)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit03"), volumeScale: Config.TypeSpell_Volume);
+                                }
+                                if (new Random().Next(TSC_SFXCount) == 4)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit04"), volumeScale: Config.TypeSpell_Volume);
+                                }
+                                if (new Random().Next(TSC_SFXCount) == 5)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit05"), volumeScale: Config.TypeSpell_Volume);
+                                }
+                                if (new Random().Next(TSC_SFXCount) == 6)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit06"), volumeScale: Config.TypeSpell_Volume);
+                                }
                             }
                             if (TSCFiles.Count != 0)
                             {
-                                int SPRand_Mod = new Random().Next(0, TSCFiles.Count);
-                                string SPRand_Result = TSCFiles[SPRand_Mod];
-                                st.TSC_Stream = Bass.BASS_StreamCreateFile(SPRand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                _ = new StreamType().TSC_Stream;
+                                st.TSC_Stream = Bass.CreateStream(TSCFiles[new Random().Next(TSCFiles.Count)]);
 
-                                Bass.BASS_ChannelSetAttribute(st.TSC_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeSpell_Volume);
-
-                                int Difference = ((int)target.position.X - (int)player.position.X);
-                                float PanSet = (Difference / (Main.screenWidth / 2));
-                                Bass.BASS_ChannelSetAttribute(st.TSC_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
-                                Bass.BASS_ChannelPlay(st.TSC_Stream, false);
+                                Bass.ChannelSetAttribute(st.TSC_Stream, ChannelAttribute.Volume, Config.Mod_TypeSpell_Volume);
+                                Bass.ChannelSetAttribute(st.TSC_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
+                                Bass.ChannelPlay(st.TSC_Stream);
+                            }
+                            else
+                            {
+                                return;
                             }
                         }
                         break;
@@ -239,28 +362,41 @@ namespace CritSounds
                         {
                             if (TBPFiles.Count == 0)
                             {
-                                int BURand_NoMod = new Random().Next(1, 5);
-                                if (BURand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeBullet/Bullet_Crit01"), Config.TypeBullet_Volume); }
-                                if (BURand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeBullet/Bullet_Crit02"), Config.TypeBullet_Volume); }
-                                if (BURand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeBullet/Bullet_Crit03"), Config.TypeBullet_Volume); }
-                                if (BURand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeBullet/Bullet_Crit04"), Config.TypeBullet_Volume); }
-                                if (BURand_NoMod == 5) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeBullet/Bullet_Crit05"), Config.TypeBullet_Volume); }
+                                if (new Random().Next(TBP_SFXCount) == 1)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeBullet/Bullet_Crit01"), volumeScale: Config.TypeBullet_Volume);
+                                }
+                                if (new Random().Next(TBP_SFXCount) == 2)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeBullet/Bullet_Crit02"), volumeScale: Config.TypeBullet_Volume);
+                                }
+                                if (new Random().Next(TBP_SFXCount) == 3)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeBullet/Bullet_Crit03"), volumeScale: Config.TypeBullet_Volume);
+                                }
+                                if (new Random().Next(TBP_SFXCount) == 4)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeBullet/Bullet_Crit04"), volumeScale: Config.TypeBullet_Volume);
+                                }
+                                if (new Random().Next(TBP_SFXCount) == 5)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeBullet/Bullet_Crit05"), volumeScale: Config.TypeBullet_Volume);
+                                }
                             }
                             if (TBPFiles.Count != 0)
                             {
-                                int BURand_Mod = new Random().Next(0, TBPFiles.Count);
-                                string BURand_Result = TBPFiles[BURand_Mod];
-                                st.TBP_Stream = Bass.BASS_StreamCreateFile(BURand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                _ = new StreamType().TBP_Stream;
+                                st.TBP_Stream = Bass.CreateStream(TBPFiles[new Random().Next(TBPFiles.Count)]);
 
-                                Bass.BASS_ChannelSetAttribute(st.TBP_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeBullet_Volume);
-
-                                int Difference = ((int)target.position.X - (int)player.position.X);
-                                float PanSet = (Difference / (Main.screenWidth / 2));
-                                Bass.BASS_ChannelSetAttribute(st.TBP_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
-                                Bass.BASS_ChannelPlay(st.TBP_Stream, false);
+                                Bass.ChannelSetAttribute(st.TBP_Stream, ChannelAttribute.Volume, Config.Mod_TypeBullet_Volume);
+                                Bass.ChannelSetAttribute(st.TBP_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
+                                Bass.ChannelPlay(st.TBP_Stream);
                             }
-                        }
+                            else
+                            {
+                                return;
+                            }
+                        };
                         break;
 
                     //Melee
@@ -270,27 +406,37 @@ namespace CritSounds
                         {
                             if (TMPFiles.Count == 0)
                             {
-                                int MERand_NoMod = new Random().Next(1, 4);
-                                if (MERand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit01"), Config.TypeMelee_Volume); }
-                                if (MERand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit02"), Config.TypeMelee_Volume); }
-                                if (MERand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit03"), Config.TypeMelee_Volume); }
-                                if (MERand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit04"), Config.TypeMelee_Volume); }
+                                if (new Random().Next(TMP_SFXCount) == 1)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit01"), volumeScale: Config.TypeMelee_Volume);
+                                }
+                                if (new Random().Next(TMP_SFXCount) == 2)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit02"), volumeScale: Config.TypeMelee_Volume);
+                                }
+                                if (new Random().Next(TMP_SFXCount) == 3)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit03"), volumeScale: Config.TypeMelee_Volume);
+                                }
+                                if (new Random().Next(TMP_SFXCount) == 4)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit04"), volumeScale: Config.TypeMelee_Volume);
+                                }
                             }
                             if (TMPFiles.Count != 0)
                             {
-                                int MERand_Mod = new Random().Next(0, TMPFiles.Count);
-                                string MERand_Result = TMPFiles[MERand_Mod];
-                                st.TMP_Stream = Bass.BASS_StreamCreateFile(MERand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                _ = new StreamType().TMP_Stream;
+                                st.TMP_Stream = Bass.CreateStream(TMPFiles[new Random().Next(TMPFiles.Count)]);
 
-                                Bass.BASS_ChannelSetAttribute(st.TMP_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeMelee_Volume);
-
-                                int Difference = ((int)target.position.X - (int)player.position.X);
-                                float PanSet = (Difference / (Main.screenWidth / 2));
-                                Bass.BASS_ChannelSetAttribute(st.TMP_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
-                                Bass.BASS_ChannelPlay(st.TMP_Stream, false);
+                                Bass.ChannelSetAttribute(st.TMP_Stream, ChannelAttribute.Volume, Config.Mod_TypeMelee_Volume);
+                                Bass.ChannelSetAttribute(st.TMP_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
+                                Bass.ChannelPlay(st.TMP_Stream);
                             }
-                        }
+                            else
+                            {
+                                return;
+                            }
+                        };
                         break;
 
                     //Summon
@@ -300,25 +446,35 @@ namespace CritSounds
                         {
                             if (TSuCFiles.Count == 0)
                             {
-                                int SURand_NoMod = new Random().Next(1, 4);
-                                if (SURand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSummon/Summon_Crit01"), Config.TypeSummon_Volume); }
-                                if (SURand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSummon/Summon_Crit02"), Config.TypeSummon_Volume); }
-                                if (SURand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSummon/Summon_Crit03"), Config.TypeSummon_Volume); }
-                                if (SURand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSummon/Summon_Crit04"), Config.TypeSummon_Volume); }
+                                if (new Random().Next(TSuC_SFXCount) == 1)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSummon/Summon_Crit01"), volumeScale: Config.TypeSummon_Volume);
+                                }
+                                if (new Random().Next(TSuC_SFXCount) == 2)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSummon/Summon_Crit02"), volumeScale: Config.TypeSummon_Volume);
+                                }
+                                if (new Random().Next(TSuC_SFXCount) == 3)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSummon/Summon_Crit03"), volumeScale: Config.TypeSummon_Volume);
+                                }
+                                if (new Random().Next(TSuC_SFXCount) == 4)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSummon/Summon_Crit04"), volumeScale: Config.TypeSummon_Volume);
+                                }
                             }
                             if (TSuCFiles.Count != 0)
                             {
-                                int SURand_Mod = new Random().Next(0, TSuCFiles.Count);
-                                string SURand_Result = TSuCFiles[SURand_Mod];
-                                st.TSuC_Stream = Bass.BASS_StreamCreateFile(SURand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                _ = new StreamType().TSuC_Stream;
+                                st.TSuC_Stream = Bass.CreateStream(TSuCFiles[new Random().Next(TSuCFiles.Count)]);
 
-                                Bass.BASS_ChannelSetAttribute(st.TSuC_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeSummon_Volume);
-
-                                int Difference = ((int)target.position.X - (int)player.position.X);
-                                float PanSet = (Difference / (Main.screenWidth / 2));
-                                Bass.BASS_ChannelSetAttribute(st.TSuC_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
-                                Bass.BASS_ChannelPlay(st.TSuC_Stream, false);
+                                Bass.ChannelSetAttribute(st.TSuC_Stream, ChannelAttribute.Volume, Config.Mod_TypeSummon_Volume);
+                                Bass.ChannelSetAttribute(st.TSuC_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
+                                Bass.ChannelPlay(st.TSuC_Stream);
+                            }
+                            else
+                            {
+                                return;
                             }
                         }
                         break;
@@ -330,27 +486,43 @@ namespace CritSounds
                         {
                             if (TMiCFiles.Count == 0)
                             {
-                                int MIRand_NoMod = new Random().Next(1, 6);
-                                if (MIRand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit01"), Config.TypeMisc_Volume); }
-                                if (MIRand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit02"), Config.TypeMisc_Volume); }
-                                if (MIRand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit03"), Config.TypeMisc_Volume); }
-                                if (MIRand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit04"), Config.TypeMisc_Volume); }
-                                if (MIRand_NoMod == 5) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit05"), Config.TypeMisc_Volume); }
-                                if (MIRand_NoMod == 6) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit06"), Config.TypeMisc_Volume); }
+                                if (new Random().Next(TMiC_SFXCount) == 1)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit01"), volumeScale: Config.TypeMisc_Volume);
+                                }
+                                if (new Random().Next(TMiC_SFXCount) == 2)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit02"), volumeScale: Config.TypeMisc_Volume);
+                                }
+                                if (new Random().Next(TMiC_SFXCount) == 3)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit03"), volumeScale: Config.TypeMisc_Volume);
+                                }
+                                if (new Random().Next(TMiC_SFXCount) == 4)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit04"), volumeScale: Config.TypeMisc_Volume);
+                                }
+                                if (new Random().Next(TMiC_SFXCount) == 5)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit05"), volumeScale: Config.TypeMisc_Volume);
+                                }
+                                if (new Random().Next(TMiC_SFXCount) == 6)
+                                {
+                                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMisc/Misc_Crit06"), volumeScale: Config.TypeMisc_Volume);
+                                }
                             }
                             if (TMiCFiles.Count != 0)
                             {
-                                int MIRand_Mod = new Random().Next(0, TMiCFiles.Count);
-                                string MIRand_Result = TMiCFiles[MIRand_Mod];
-                                st.TMiC_Stream = Bass.BASS_StreamCreateFile(MIRand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                _ = new StreamType().TMiC_Stream;
+                                st.TMiC_Stream = Bass.CreateStream(TMiCFiles[new Random().Next(TMiCFiles.Count)]);
 
-                                Bass.BASS_ChannelSetAttribute(st.TMiC_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeMisc_Volume);
-
-                                int Difference = ((int)target.position.X - (int)player.position.X);
-                                float PanSet = (Difference / (Main.screenWidth / 2));
-                                Bass.BASS_ChannelSetAttribute(st.TMiC_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
-                                Bass.BASS_ChannelPlay(st.TMiC_Stream, false);
+                                Bass.ChannelSetAttribute(st.TMiC_Stream, ChannelAttribute.Volume, Config.Mod_TypeMisc_Volume);
+                                Bass.ChannelSetAttribute(st.TMiC_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
+                                Bass.ChannelPlay(st.TMiC_Stream);
+                            }
+                            else
+                            {
+                                return;
                             }
                         }
                         break;
@@ -367,25 +539,35 @@ namespace CritSounds
                             {
                                 if (TACFiles.Count == 0)
                                 {
-                                    int ARRand_NoMod = new Random().Next(1, 4);
-                                    if (ARRand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit01"), Config.TypeArrow_Volume); }
-                                    if (ARRand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit02"), Config.TypeArrow_Volume); }
-                                    if (ARRand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit03"), Config.TypeArrow_Volume); }
-                                    if (ARRand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit04"), Config.TypeArrow_Volume); }
+                                    if (new Random().Next(TAC_SFXCount) == 1)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit01"), volumeScale: Config.TypeArrow_Volume);
+                                    }
+                                    if (new Random().Next(TAC_SFXCount) == 2)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit02"), volumeScale: Config.TypeArrow_Volume);
+                                    }
+                                    if (new Random().Next(TAC_SFXCount) == 3)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit03"), volumeScale: Config.TypeArrow_Volume);
+                                    }
+                                    if (new Random().Next(TAC_SFXCount) == 4)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeArrow/Arrow_Crit04"), volumeScale: Config.TypeArrow_Volume);
+                                    }
                                 }
                                 if (TACFiles.Count != 0)
                                 {
-                                    int ARRand_Mod = new Random().Next(0, TACFiles.Count);
-                                    string ARRand_Result = TACFiles[ARRand_Mod];
-                                    st.TAC_Stream = Bass.BASS_StreamCreateFile(ARRand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                    _ = new StreamType().TAC_Stream;
+                                    st.TAC_Stream = Bass.CreateStream(TACFiles[new Random().Next(TACFiles.Count)]);
 
-                                    Bass.BASS_ChannelSetAttribute(st.TAC_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeArrow_Volume);
-
-                                    int Difference = ((int)target.position.X - (int)player.position.X);
-                                    float PanSet = (Difference / (Main.screenWidth / 2));
-                                    Bass.BASS_ChannelSetAttribute(st.TAC_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
-                                    Bass.BASS_ChannelPlay(st.TAC_Stream, false);
+                                    Bass.ChannelSetAttribute(st.TAC_Stream, ChannelAttribute.Volume, Config.Mod_TypeArrow_Volume);
+                                    Bass.ChannelSetAttribute(st.TAC_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
+                                    Bass.ChannelPlay(st.TAC_Stream);
+                                }
+                                else
+                                {
+                                    return;
                                 }
                             }
 
@@ -393,25 +575,35 @@ namespace CritSounds
                             {
                                 if (TTCFiles.Count == 0)
                                 {
-                                    int THRand_NoMod = new Random().Next(1, 4);
-                                    if (THRand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit01"), Config.TypeThrowing_Volume); }
-                                    if (THRand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit02"), Config.TypeThrowing_Volume); }
-                                    if (THRand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit03"), Config.TypeThrowing_Volume); }
-                                    if (THRand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit04"), Config.TypeThrowing_Volume); }
+                                    if (new Random().Next(TTC_SFXCount) == 1)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit01"), volumeScale: Config.TypeThrowing_Volume);
+                                    }
+                                    if (new Random().Next(TTC_SFXCount) == 2)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit02"), volumeScale: Config.TypeThrowing_Volume);
+                                    }
+                                    if (new Random().Next(TTC_SFXCount) == 3)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit03"), volumeScale: Config.TypeThrowing_Volume);
+                                    }
+                                    if (new Random().Next(TTC_SFXCount) == 4)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit04"), volumeScale: Config.TypeThrowing_Volume);
+                                    }
                                 }
                                 if (TTCFiles.Count != 0)
                                 {
-                                    int THRand_Mod = new Random().Next(0, TTCFiles.Count);
-                                    string THRand_Result = TTCFiles[THRand_Mod];
-                                    st.TTC_Stream = Bass.BASS_StreamCreateFile(THRand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                    _ = new StreamType().TTC_Stream;
+                                    st.TTC_Stream = Bass.CreateStream(TTCFiles[new Random().Next(TTCFiles.Count)]);
 
-                                    Bass.BASS_ChannelSetAttribute(st.TTC_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeThrowing_Volume);
-
-                                    int Difference = ((int)target.position.X - (int)player.position.X);
-                                    float PanSet = (Difference / (Main.screenWidth / 2));
-                                    Bass.BASS_ChannelSetAttribute(st.TTC_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
-                                    Bass.BASS_ChannelPlay(st.TTC_Stream, false);
+                                    Bass.ChannelSetAttribute(st.TTC_Stream, ChannelAttribute.Volume, Config.Mod_TypeThrowing_Volume);
+                                    Bass.ChannelSetAttribute(st.TTC_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
+                                    Bass.ChannelPlay(st.TTC_Stream);
+                                }
+                                else
+                                {
+                                    return;
                                 }
                             }
 
@@ -419,27 +611,43 @@ namespace CritSounds
                             {
                                 if (TSCFiles.Count == 0)
                                 {
-                                    int SPRand_NoMod = new Random().Next(1, 6);
-                                    if (SPRand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit01"), Config.TypeSpell_Volume); }
-                                    if (SPRand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit02"), Config.TypeSpell_Volume); }
-                                    if (SPRand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit03"), Config.TypeSpell_Volume); }
-                                    if (SPRand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit04"), Config.TypeSpell_Volume); }
-                                    if (SPRand_NoMod == 5) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit05"), Config.TypeSpell_Volume); }
-                                    if (SPRand_NoMod == 6) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit06"), Config.TypeSpell_Volume); }
+                                    if (new Random().Next(TSC_SFXCount) == 1)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit01"), volumeScale: Config.TypeSpell_Volume);
+                                    }
+                                    if (new Random().Next(TSC_SFXCount) == 2)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit02"), volumeScale: Config.TypeSpell_Volume);
+                                    }
+                                    if (new Random().Next(TSC_SFXCount) == 3)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit03"), volumeScale: Config.TypeSpell_Volume);
+                                    }
+                                    if (new Random().Next(TSC_SFXCount) == 4)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit04"), volumeScale: Config.TypeSpell_Volume);
+                                    }
+                                    if (new Random().Next(TSC_SFXCount) == 5)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit05"), volumeScale: Config.TypeSpell_Volume);
+                                    }
+                                    if (new Random().Next(TSC_SFXCount) == 6)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeSpell/Spell_Crit06"), volumeScale: Config.TypeSpell_Volume);
+                                    }
                                 }
-                                if (TSCFiles != null || TSCFiles.Count != 0)
+                                if (TSCFiles.Count != 0)
                                 {
-                                    int SPRand_Mod = new Random().Next(0, TSCFiles.Count);
-                                    string SPRand_Result = TSCFiles[SPRand_Mod];
-                                    st.TSC_Stream = Bass.BASS_StreamCreateFile(SPRand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                    _ = new StreamType().TSC_Stream;
+                                    st.TSC_Stream = Bass.CreateStream(TSCFiles[new Random().Next(TSCFiles.Count)]);
 
-                                    Bass.BASS_ChannelSetAttribute(st.TSC_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeSpell_Volume);
-
-                                    int Difference = ((int)target.position.X - (int)player.position.X);
-                                    float PanSet = (Difference / (Main.screenWidth / 2));
-                                    Bass.BASS_ChannelSetAttribute(st.TSC_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
-                                    Bass.BASS_ChannelPlay(st.TSC_Stream, false);
+                                    Bass.ChannelSetAttribute(st.TSC_Stream, ChannelAttribute.Volume, Config.Mod_TypeSpell_Volume);
+                                    Bass.ChannelSetAttribute(st.TSC_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
+                                    Bass.ChannelPlay(st.TSC_Stream);
+                                }
+                                else
+                                {
+                                    return;
                                 }
                             }
 
@@ -447,25 +655,35 @@ namespace CritSounds
                             {
                                 if (TMPFiles.Count == 0)
                                 {
-                                    int MERand_NoMod = new Random().Next(1, 4);
-                                    if (MERand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit01"), Config.TypeMelee_Volume); }
-                                    if (MERand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit02"), Config.TypeMelee_Volume); }
-                                    if (MERand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit03"), Config.TypeMelee_Volume); }
-                                    if (MERand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit04"), Config.TypeMelee_Volume); }
+                                    if (new Random().Next(TMP_SFXCount) == 1)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit01"), volumeScale: Config.TypeMelee_Volume);
+                                    }
+                                    if (new Random().Next(TMP_SFXCount) == 2)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit02"), volumeScale: Config.TypeMelee_Volume);
+                                    }
+                                    if (new Random().Next(TMP_SFXCount) == 3)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit03"), volumeScale: Config.TypeMelee_Volume);
+                                    }
+                                    if (new Random().Next(TMP_SFXCount) == 4)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeMelee/Melee_Crit04"), volumeScale: Config.TypeMelee_Volume);
+                                    }
                                 }
-                                if (TMPFiles != null || TMPFiles.Count != 0)
+                                if (TMPFiles.Count != 0)
                                 {
-                                    int MERand_Mod = new Random().Next(0, TMPFiles.Count);
-                                    string MERand_Result = TMPFiles[MERand_Mod];
-                                    st.TMP_Stream = Bass.BASS_StreamCreateFile(MERand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                    _ = new StreamType().TMP_Stream;
+                                    st.TMP_Stream = Bass.CreateStream(TMPFiles[new Random().Next(TMPFiles.Count)]);
 
-                                    Bass.BASS_ChannelSetAttribute(st.TMP_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeMelee_Volume);
-
-                                    int Difference = ((int)target.position.X - (int)player.position.X);
-                                    float PanSet = (Difference / (Main.screenWidth / 2));
-                                    Bass.BASS_ChannelSetAttribute(st.TMP_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
-                                    Bass.BASS_ChannelPlay(st.TMP_Stream, false);
+                                    Bass.ChannelSetAttribute(st.TMP_Stream, ChannelAttribute.Volume, Config.Mod_TypeSpell_Volume);
+                                    Bass.ChannelSetAttribute(st.TMP_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
+                                    Bass.ChannelPlay(st.TMP_Stream);
+                                }
+                                else
+                                {
+                                    return;
                                 }
                             }
 
@@ -473,29 +691,45 @@ namespace CritSounds
                             {
                                 if (TUCFiles.Count == 0)
                                 {
-                                    int UNRand_NoMod = new Random().Next(1, 5);
-                                    if (UNRand_NoMod == 1) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeUnknown/Unknown_Crit01"), Config.TypeUnknown_Volume); }
-                                    if (UNRand_NoMod == 2) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeUnknown/Unknown_Crit02"), Config.TypeUnknown_Volume); }
-                                    if (UNRand_NoMod == 3) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeUnknown/Unknown_Crit03"), Config.TypeUnknown_Volume); }
-                                    if (UNRand_NoMod == 4) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeUnknown/Unknown_Crit04"), Config.TypeUnknown_Volume); }
-                                    if (UNRand_NoMod == 5) { Main.PlaySound(50, (int)target.position.X, (int)target.position.Y, mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeUnknown/Unknown_Crit05"), Config.TypeUnknown_Volume); }
+                                    if (new Random().Next(TUC_SFXCount) == 1)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeUnknown/Unknown_Crit01"), volumeScale: Config.TypeUnknown_Volume);
+                                    }
+                                    if (new Random().Next(TUC_SFXCount) == 2)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeUnknown/Unknown_Crit02"), volumeScale: Config.TypeUnknown_Volume);
+                                    }
+                                    if (new Random().Next(TUC_SFXCount) == 3)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeUnknown/Unknown_Crit03"), volumeScale: Config.TypeUnknown_Volume);
+                                    }
+                                    if (new Random().Next(TUC_SFXCount) == 4)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeUnknown/Unknown_Crit04"), volumeScale: Config.TypeUnknown_Volume);
+                                    }
+                                    if (new Random().Next(TUC_SFXCount) == 5)
+                                    {
+                                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Projectiles/TypeUnknown/Unknown_Crit05"), volumeScale: Config.TypeUnknown_Volume);
+                                    }
                                 }
                                 if (TUCFiles.Count != 0)
                                 {
-                                    int UNRand_Mod = new Random().Next(0, TUCFiles.Count);
-                                    string UNRand_Result = TUCFiles[UNRand_Mod];
-                                    st.TUC_Stream = Bass.BASS_StreamCreateFile(UNRand_Result, 0, 0, BASSFlag.BASS_DEFAULT);
+                                    _ = new StreamType().TUC_Stream;
+                                    st.TUC_Stream = Bass.CreateStream(TUCFiles[new Random().Next(TUCFiles.Count)]);
 
-                                    Bass.BASS_ChannelSetAttribute(st.TUC_Stream, BASSAttribute.BASS_ATTRIB_VOL, Config.Mod_TypeUnknown_Volume);
-
-                                    int Difference = ((int)target.position.X - (int)player.position.X);
-                                    float PanSet = (Difference / (Main.screenWidth / 2));
-                                    Bass.BASS_ChannelSetAttribute(st.TUC_Stream, BASSAttribute.BASS_ATTRIB_PAN, PanSet);
-
-                                    Bass.BASS_ChannelPlay(st.TUC_Stream, false);
+                                    Bass.ChannelSetAttribute(st.TUC_Stream, ChannelAttribute.Volume, Config.Mod_TypeSpell_Volume);
+                                    Bass.ChannelSetAttribute(st.TUC_Stream, ChannelAttribute.Pan, ((int)target.position.X - (int)player.position.X) / (Main.screenWidth / 2));
+                                    Bass.ChannelPlay(st.TUC_Stream);
+                                }
+                                else
+                                {
+                                    return;
                                 }
                             }
                         }
+                        break;
+                    default:
+                        mod.Logger.WarnFormat(mod.Name, " Default case for projectiles triggered. That's not good.");
                         break;
                 }
             }
@@ -504,7 +738,7 @@ namespace CritSounds
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
         {
             //Frees BASS resources whenever the player character dies
-            Bass.BASS_Free();
+            Bass.Free();
             return true;
         }
     }

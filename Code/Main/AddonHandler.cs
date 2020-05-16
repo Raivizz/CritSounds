@@ -1,10 +1,5 @@
-using System;
-using System.Net;
+using ManagedBass;
 using System.IO;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ModLoader;
-using Un4seen.Bass;
 
 namespace CritSounds
 {
@@ -17,25 +12,25 @@ namespace CritSounds
             //AAC
             if ((File.Exists("bass_aac.dll")) & (Config.BASSAddon_EnableAACAddon))
             {
-                laa.Addon_AAC = Bass.BASS_PluginLoad("bass_aac.dll");
+                laa.Addon_AAC = Bass.PluginLoad("bass_aac.dll");
             }
 
             //FLAC
             if (File.Exists("bassflac.dll") & Config.BASSAddon_EnableFLACAddon)
             {
-                laa.Addon_FLAC = Bass.BASS_PluginLoad("bassflac.dll");
+                laa.Addon_FLAC = Bass.PluginLoad("bassflac.dll");
             }
 
             //OPUS
             if (File.Exists("bassopus.dll") & Config.BASSAddon_EnableOPUSAddon)
             {
-                laa.Addon_OPUS = Bass.BASS_PluginLoad("bassopus.dll");
+                laa.Addon_OPUS = Bass.PluginLoad("bassopus.dll");
             }
 
             //WMA
             if (File.Exists("basswma.dll") & Config.BASSAddon_EnableWMAAddon)
             {
-                laa.Addon_WMA = Bass.BASS_PluginLoad("basswma.dll");
+                laa.Addon_WMA = Bass.PluginLoad("basswma.dll");
             }
         }
 
@@ -45,25 +40,25 @@ namespace CritSounds
 
             if (ua.Addon_AAC != 0)
             {
-                Bass.BASS_PluginFree(ua.Addon_AAC);
+                Bass.PluginFree(ua.Addon_AAC);
             }
-			
+
             //FLAC
             if (ua.Addon_FLAC != 0)
             {
-                Bass.BASS_PluginFree(ua.Addon_FLAC);
+                Bass.PluginFree(ua.Addon_FLAC);
             }
 
             //OPUS
             if (ua.Addon_OPUS != 0)
             {
-                Bass.BASS_PluginFree(ua.Addon_OPUS);
+                Bass.PluginFree(ua.Addon_OPUS);
             }
 
             //WMA
             if (ua.Addon_WMA != 0)
             {
-                Bass.BASS_PluginFree(ua.Addon_WMA);
+                Bass.PluginFree(ua.Addon_WMA);
             }
         }
     }

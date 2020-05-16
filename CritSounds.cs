@@ -1,17 +1,10 @@
-using System.Linq;
+using ManagedBass;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Security.Policy;
-using Terraria.ModLoader.IO;
-using Un4seen.Bass;
 
 namespace CritSounds
 {
-    class CritSounds : Mod
+    internal class CritSounds : Mod
     {
         public bool LoadedFKTModSettings = false;
 
@@ -96,9 +89,8 @@ namespace CritSounds
 
         private void UpdateModSettings()
         {
-            FKTModSettings.ModSetting setting;
 
-            if (FKTModSettings.ModSettingsAPI.TryGetModSetting(this, out setting))
+            if (FKTModSettings.ModSettingsAPI.TryGetModSetting(this, out FKTModSettings.ModSetting setting))
             {
                 setting.Get("MeleeStabCrits_Enabled", ref Config.MeleeStabCrits_Enabled);
                 setting.Get("MeleeStab_Volume", ref Config.MeleeStab_Volume);
@@ -136,7 +128,7 @@ namespace CritSounds
 
         public override void PreSaveAndQuit()
         {
-            Bass.BASS_Free();
+            Bass.Free();
             AddonHandler.UnloadAddons();
         }
     }

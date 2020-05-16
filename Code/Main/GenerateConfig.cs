@@ -1,98 +1,92 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Terraria;
 using Terraria.IO;
-using Terraria.ModLoader;
 
 namespace CritSounds
 {
     public static class Config
     {
         /// <summary>Enable crit sounds on melee stabs.</summary>
-        public static bool MeleeStabCrits_Enabled = true;
+        internal static bool MeleeStabCrits_Enabled = true;
         /// <summary>Changes the volume of melee stabbing crits</summary>
-        public static float MeleeStab_Volume = 1f;
+        internal static float MeleeStab_Volume = 1f;
 
         /// <summary>Enable projectile crit handlers.</summary>
-        public static bool ProjectileCrits_Enabled = true;
+        internal static bool ProjectileCrits_Enabled = true;
 
         /// <summary>Enables crit sounds for arrow projectiles.</summary>
-        public static bool ProjectileCrits_TypeArrow_Enabled = true;
+        internal static bool ProjectileCrits_TypeArrow_Enabled = true;
         /// <summary>Changes the volume of arrow projectiles or modded ranged weapons</summary>
-        public static float TypeArrow_Volume = 1f;
+        internal static float TypeArrow_Volume = 1f;
 
         /// <summary>Enables crit sounds for Throwing projectiles.</summary>
-        public static bool ProjectileCrits_TypeThrowing_Enabled = true;
+        internal static bool ProjectileCrits_TypeThrowing_Enabled = true;
         /// <summary>Changes the volume of throw-able weapons or modded throwing-type weapons</summary>
-        public static float TypeThrowing_Volume = 1f;
+        internal static float TypeThrowing_Volume = 1f;
 
         /// <summary>Enables crit sounds for magic projectiles.</summary>
-        public static bool ProjectileCrits_TypeSpell_Enabled = true;
+        internal static bool ProjectileCrits_TypeSpell_Enabled = true;
         /// <summary>Changes the volume of magic-based weapons</summary>
-        public static float TypeSpell_Volume = 1f;
+        internal static float TypeSpell_Volume = 1f;
 
         /// <summary>Enables crit sounds for bullet projectiles.</summary>
-        public static bool ProjectileCrits_TypeBullet_Enabled = true;
+        internal static bool ProjectileCrits_TypeBullet_Enabled = true;
         /// <summary>Changes the volume of bullet-based vanilla weapons</summary>
-        public static float TypeBullet_Volume = 1f;
+        internal static float TypeBullet_Volume = 1f;
 
         /// <summary>Enables crit sounds for melee projectiles and weaponry.</summary>
-        public static bool ProjectileCrits_TypeMelee_Enabled = true;
+        internal static bool ProjectileCrits_TypeMelee_Enabled = true;
         /// <summary>Changes the volume of melee-based ranged weaponry, yoyos, or modded melee-damage-type weapons</summary>
-        public static float TypeMelee_Volume = 1f;
+        internal static float TypeMelee_Volume = 1f;
 
         /// <summary>Enables crit sounds for summoned entities.</summary>
-        public static bool ProjectileCrits_TypeSummon_Enabled = true;
+        internal static bool ProjectileCrits_TypeSummon_Enabled = true;
         /// <summary>Changes the volume of summoned minions and sentries</summary>
-        public static float TypeSummon_Volume = 1f;
+        internal static float TypeSummon_Volume = 1f;
 
         /// <summary>Enables crit sounds for miscellaneous projectiles.</summary>
-        public static bool ProjectileCrits_TypeMisc_Enabled = true;
+        internal static bool ProjectileCrits_TypeMisc_Enabled = true;
         /// <summary>Changes the volume of miscellaneous projectiles, such as seeds and others.</summary>
-        public static float TypeMisc_Volume = 1f;
+        internal static float TypeMisc_Volume = 1f;
 
         /// <summary>Enables crit sounds for undefined projectiles.</summary>
-        public static bool ProjectileCrits_TypeUnknown_Enabled = true;
+        internal static bool ProjectileCrits_TypeUnknown_Enabled = true;
         /// <summary>Changes the volume of undefined projectiles, mostly modded weapons with custom damage types or modded summoner weapons.</summary>
-        public static float TypeUnknown_Volume = 1f;
+        internal static float TypeUnknown_Volume = 1f;
 
         /// <summary>Changes the volume for the Egg 01 batch. If you think I'm gonna spoil it here for ya, you're wrong. Then again, you are reading the code, so you might as well just find where this is looked up and just trace the item ID.</summary>
-        public static float Egg01_Volume = 1f;
+        internal static float Egg01_Volume = 1f;
 
         //Custom sound volume
         /// <summary>Change the volume of custom melee stabbing crit sounds.</summary>
-        public static float Mod_MeleeStab_Volume = 1f;
+        internal static float Mod_MeleeStab_Volume = 1f;
         /// <summary>Change the volume of custom arrow-based weapon crit sounds.</summary>
-        public static float Mod_TypeArrow_Volume = 1f;
+        internal static float Mod_TypeArrow_Volume = 1f;
         /// <summary>Change the volume of custom throw-able weaponry crit sounds.</summary>
-        public static float Mod_TypeThrowing_Volume = 1f;
+        internal static float Mod_TypeThrowing_Volume = 1f;
         /// <summary>Change the volume of custom magic-based weaponry crit sounds.</summary>
-        public static float Mod_TypeSpell_Volume = 1f;
+        internal static float Mod_TypeSpell_Volume = 1f;
         /// <summary>Change the volume of custom bullet-based weaponry crit sounds.</summary>
-        public static float Mod_TypeBullet_Volume = 1f;
+        internal static float Mod_TypeBullet_Volume = 1f;
         /// <summary>Change the volume of custom melee-based crit sounds.</summary>
-        public static float Mod_TypeMelee_Volume = 1f;
+        internal static float Mod_TypeMelee_Volume = 1f;
         /// <summary>Change the volume of custom summoned entity crit sounds</summary>
-        public static float Mod_TypeSummon_Volume = 1f;
+        internal static float Mod_TypeSummon_Volume = 1f;
         /// <summary>Change the volume of custom miscellaneous projectile crit sounds.</summary>
-        public static float Mod_TypeMisc_Volume = 1f;
+        internal static float Mod_TypeMisc_Volume = 1f;
         /// <summary>Change the volume of unknown projectile crit sounds.</summary>
-        public static float Mod_TypeUnknown_Volume = 1f;
-
-        /// <summary>Changes the sound frequency used to initialize BASS. Only change if you know what you're doing!</summary>
-        public static int BASSDeviceFrequency = 44100;
+        internal static float Mod_TypeUnknown_Volume = 1f;
 
         /// <summary>Enables AAC addon support for BASS. bass_aac.dll weighs 147KB</summary>
-        public static bool BASSAddon_EnableAACAddon = false;
+        internal static bool BASSAddon_EnableAACAddon = false;
         /// <summary>Enables FLAC addon support for BASS. bassflac.dll weighs 25KB</summary>
-        public static bool BASSAddon_EnableFLACAddon = false;
+        internal static bool BASSAddon_EnableFLACAddon = false;
         /// <summary>Enables OPUS addon support for BASS. bassopus.dll weighs 68KB</summary>
-        public static bool BASSAddon_EnableOPUSAddon = false;
+        internal static bool BASSAddon_EnableOPUSAddon = false;
         /// <summary>Enables WMA addon support for BASS. basswma.dll weighs 18KB</summary>
-        public static bool BASSAddon_EnableWMAAddon = false;
-
-        static string ConfigPath = Path.Combine(Main.SavePath, "Mod Configs", "Crit Sounds v123.json");
-        static Preferences Configuration = new Preferences(ConfigPath);
+        internal static bool BASSAddon_EnableWMAAddon = false;
+        private static readonly string ConfigPath = Path.Combine(Main.SavePath, "Mod Configs", "Crit Sounds v13.json");
+        private static readonly Preferences Configuration = new Preferences(ConfigPath);
 
         public static void Load()
         {
@@ -100,12 +94,11 @@ namespace CritSounds
 
             if (!success)
             {
-                ErrorLogger.Log("Required config missing or unreadable. Creating a new config...");
                 CreateConfig();
             }
         }
 
-        static bool ReadConfig()
+        private static bool ReadConfig()
         {
             if (Configuration.Load())
             {
@@ -120,8 +113,6 @@ namespace CritSounds
                 Configuration.Get("ProjectileCrits_TypeSummon_Enabled", ref ProjectileCrits_TypeSummon_Enabled);
                 Configuration.Get("ProjectileCrits_TypeMisc_Enabled", ref ProjectileCrits_TypeMisc_Enabled);
                 Configuration.Get("ProjectileCrits_TypeUnknown_Enabled", ref ProjectileCrits_TypeUnknown_Enabled);
-
-                Configuration.Get("BASSDeviceFrequency", ref BASSDeviceFrequency);
 
                 Configuration.Get("MeleeStab_Volume", ref MeleeStab_Volume);
                 Configuration.Get("TypeArrow_Volume", ref TypeArrow_Volume);
@@ -155,7 +146,7 @@ namespace CritSounds
             return false;
         }
 
-        static void CreateConfig()
+        private static void CreateConfig()
         {
             Configuration.Clear();
 
@@ -170,8 +161,6 @@ namespace CritSounds
             Configuration.Put("ProjectileCrits_TypeSummon_Enabled", ProjectileCrits_TypeSummon_Enabled);
             Configuration.Put("ProjectileCrits_TypeMisc_Enabled", ProjectileCrits_TypeMisc_Enabled);
             Configuration.Put("ProjectileCrits_TypeUnknown_Enabled", ProjectileCrits_TypeUnknown_Enabled);
-
-            Configuration.Put("BASSDeviceFrequency", BASSDeviceFrequency);
 
             Configuration.Put("MeleeStab_Volume", MeleeStab_Volume);
             Configuration.Put("TypeArrow_Volume", TypeArrow_Volume);

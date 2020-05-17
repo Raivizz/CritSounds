@@ -89,11 +89,11 @@ namespace CritSounds
 				{
 					if (BytesToString(GetHashSha256("bass.dll")) == SHA256_Bass32)
 					{
-						mod.Logger.InfoFormat("{0} | bass.dll hash code matches for a 32-bit process", mod.Name);
+						mod.Logger.Info("| bass.dll hash code matches for a 32-bit process");
 					}
 					else
 					{
-						mod.Logger.InfoFormat("{0} | bass.dll for 32-bit process does not match hash, redownloading...", mod.Name);
+						mod.Logger.Info("| bass.dll for 32-bit process does not match hash, redownloading...");
 						File.Delete("bass.dll");
 						client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x32/bass.dll", "bass.dll");
 					}
@@ -104,12 +104,12 @@ namespace CritSounds
 				{
 					if (BytesToString(GetHashSha256("bass.dll")) == SHA256_Bass64)
 					{
-						mod.Logger.InfoFormat("{0} bass.dll hash code matches for a 64-bit process", mod.Name);
+						mod.Logger.Info("bass.dll hash code matches for a 64-bit process");
 						Bass.Init();
 					}
 					else
 					{
-						mod.Logger.InfoFormat("{0} bass.dll for 64-bit process does not match hash, redownloading...", mod.Name);
+						mod.Logger.Info("bass.dll for 64-bit process does not match hash, redownloading...");
 						File.Delete("bass.dll");
 						client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x64/bass.dll", "bass.dll");
 					}
@@ -117,14 +117,14 @@ namespace CritSounds
 				//Downloads the 32-bit BASS library if it doesn't exist
 				if (!File.Exists("bass.dll") && is64BitTerraria == false)
 				{
-					mod.Logger.InfoFormat("{0} bass.dll for 32-bit process not found, downloading...", mod.Name);
+					mod.Logger.Info("bass.dll for 32-bit process not found, downloading...");
 					client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x32/bass.dll", "bass.dll");
 				}
 
 				//Downloads the 64-bit BASS library if it doesn't exist
 				if (!File.Exists("bass.dll") && is64BitTerraria == true)
 				{
-					mod.Logger.InfoFormat("{0} bass.dll for 64-bit process not found, downloading...", mod.Name);
+					mod.Logger.Info("bass.dll for 64-bit process not found, downloading...");
 					client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x64/bass.dll", "bass.dll");
 				}
 
@@ -134,11 +134,11 @@ namespace CritSounds
 				{
 					if (BytesToString(GetHashSha256("bass_aac.dll")) == SHA256_BassAAC32)
 					{
-						mod.Logger.InfoFormat("{0} bass_aac.dll hash code matches for a 32-bit process", mod.Name);
+						mod.Logger.Info("bass_aac.dll hash code matches for a 32-bit process");
 					}
 					else
 					{
-						mod.Logger.InfoFormat("{0} bass_aac.dll for 32-bit process does not match hash, redownloading...", mod.Name);
+						mod.Logger.Info("bass_aac.dll for 32-bit process does not match hash, redownloading...");
 						File.Delete("bass_aac.dll");
 						client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x32/bass_aac.dll", "bass_aac.dll");
 					}
@@ -148,11 +148,11 @@ namespace CritSounds
 				{
 					if (BytesToString(GetHashSha256("bass_aac.dll")) == SHA256_BassAAC64)
 					{
-						mod.Logger.InfoFormat("{0} bass_aac.dll hash code matches for a 64-bit process", mod.Name);
+						mod.Logger.Info("bass_aac.dll hash code matches for a 64-bit process");
 					}
 					else
 					{
-						mod.Logger.InfoFormat("{0} bass_aac.dll for 64-bit process does not match hash, redownloading...", mod.Name);
+						mod.Logger.Info("bass_aac.dll for 64-bit process does not match hash, redownloading...");
 						File.Delete("bass_aac.dll");
 						client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x64/bass_aac.dll", "bass_aac.dll");
 					}
@@ -160,13 +160,13 @@ namespace CritSounds
 				//AAC - 32 bit - file does not exist
 				if (!File.Exists("bass_aac.dll") && is64BitTerraria == false)
 				{
-					mod.Logger.InfoFormat("{0} bass_aac.dll for 32-bit process not found, downloading...", mod.Name);
+					mod.Logger.Info("bass_aac.dll for 32-bit process not found, downloading...");
 					client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x32/bass_aac.dll", "bass_aac.dll");
 				}
 				//AAC - 64 bit - file does not exist
 				if (!File.Exists("bass_aac.dll") && is64BitTerraria == true)
 				{
-					mod.Logger.InfoFormat("{0} bass_aac.dll for 64-bit process not found, downloading...", mod.Name);
+					mod.Logger.Info("bass_aac.dll for 64-bit process not found, downloading...");
 					client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x64/bass_aac.dll", "bass_aac.dll");
 				}
 
@@ -175,11 +175,11 @@ namespace CritSounds
 				{
 					if (BytesToString(GetHashSha256("bassflac.dll")) == SHA256_BassFLAC32)
 					{
-						mod.Logger.InfoFormat("{0} bassflac.dll hash code matches for a 32-bit process", mod.Name);
+						mod.Logger.Info("bassflac.dll hash code matches for a 32-bit process");
 					}
 					else
 					{
-						mod.Logger.InfoFormat("{0} bassflac.dll for 32-bit process does not match hash, redownloading...", mod.Name);
+						mod.Logger.Info("bassflac.dll for 32-bit process does not match hash, redownloading...");
 						File.Delete("bassflac.dll");
 						client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x32/bass_flac.dll", "bass_flac.dll");
 					}
@@ -189,11 +189,11 @@ namespace CritSounds
 				{
 					if (BytesToString(GetHashSha256("bassflac.dll")) == SHA256_BassFLAC64)
 					{
-						mod.Logger.InfoFormat("{0} bassflac.dll hash code matches for a 64-bit process", mod.Name);
+						mod.Logger.Info("bassflac.dll hash code matches for a 64-bit process");
 					}
 					else
 					{
-						mod.Logger.InfoFormat("{0} bass_flac.dll for 64-bit process does not match hash, redownloading...", mod.Name);
+						mod.Logger.Info("bass_flac.dll for 64-bit process does not match hash, redownloading...");
 						File.Delete("bassflac.dll");
 						client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x64/bassflac.dll", "bassflac.dll");
 					}
@@ -201,13 +201,13 @@ namespace CritSounds
 				//FLAC - 32 bit - file does not exist
 				if (!File.Exists("bassflac.dll") && is64BitTerraria == false)
 				{
-					mod.Logger.InfoFormat("{0} bassflac.dll for 32-bit process not found, downloading...", mod.Name);
+					mod.Logger.Info("bassflac.dll for 32-bit process not found, downloading...");
 					client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x32/bassflac.dll", "bassflac.dll");
 				}
 				//FLAC - 64 bit - file does not exist
 				if (!File.Exists("bassflac.dll") && is64BitTerraria == true)
 				{
-					mod.Logger.InfoFormat("{0} bassflac.dll for 64-bit process not found, downloading...", mod.Name);
+					mod.Logger.Info("bassflac.dll for 64-bit process not found, downloading...");
 					client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x64/bassflac.dll", "bassflac.dll");
 				}
 
@@ -216,11 +216,11 @@ namespace CritSounds
 				{
 					if (BytesToString(GetHashSha256("bassopus.dll")) == SHA256_BassOPUS32)
 					{
-						mod.Logger.InfoFormat("{0} bassopus.dll hash code matches for a 32-bit process", mod.Name);
+						mod.Logger.Info("bassopus.dll hash code matches for a 32-bit process");
 					}
 					else
 					{
-						mod.Logger.InfoFormat("{0} bassopus.dll for 32-bit process does not match hash, redownloading...", mod.Name);
+						mod.Logger.Info("bassopus.dll for 32-bit process does not match hash, redownloading...");
 						File.Delete("bassopus.dll");
 						client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x32/bassopus.dll", "bassopus.dll");
 					}
@@ -230,11 +230,11 @@ namespace CritSounds
 				{
 					if (BytesToString(GetHashSha256("bassopus.dll")) == SHA256_BassOPUS64)
 					{
-						mod.Logger.InfoFormat("{0} bassopus.dll hash code matches for a 64-bit process", mod.Name);
+						mod.Logger.Info("bassopus.dll hash code matches for a 64-bit process");
 					}
 					else
 					{
-						mod.Logger.InfoFormat("{0} bassopus.dll for 32-bit process does not match hash, redownloading...", mod.Name);
+						mod.Logger.Info("bassopus.dll for 32-bit process does not match hash, redownloading...");
 						File.Delete("bassopus.dll");
 						client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x64/bassopus.dll", "bassopus.dll");
 					}
@@ -242,13 +242,13 @@ namespace CritSounds
 				//OPUS - 32 bit - file does not exist
 				if (!File.Exists("bassopus.dll") && is64BitTerraria == false)
 				{
-					mod.Logger.InfoFormat("{0} bassopus.dll for 32-bit process not found, downloading...", mod.Name);
+					mod.Logger.Info("bassopus.dll for 32-bit process not found, downloading...");
 					client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x32/bassopus.dll", "bassopus.dll");
 				}
 				//OPUS - 64 bit - file does not exist
 				if (!File.Exists("bassopus.dll") && is64BitTerraria == true)
 				{
-					mod.Logger.InfoFormat("{0} bassopus.dll for 64-bit process not found, downloading...", mod.Name);
+					mod.Logger.Info("bassopus.dll for 64-bit process not found, downloading...");
 					client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x64/bassopus.dll", "bassopus.dll");
 				}
 
@@ -257,11 +257,11 @@ namespace CritSounds
 				{
 					if (BytesToString(GetHashSha256("basswma.dll")) == SHA256_BassWMA32)
 					{
-						mod.Logger.InfoFormat("{0} basswma.dll hash code matches for a 32-bit process", mod.Name);
+						mod.Logger.Info("basswma.dll hash code matches for a 32-bit process");
 					}
 					else
 					{
-						mod.Logger.InfoFormat("{0} basswma.dll for 32-bit process does not match hash, redownloading...", mod.Name);
+						mod.Logger.Info("basswma.dll for 32-bit process does not match hash, redownloading...");
 						File.Delete("basswma.dll");
 						client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x32/basswma.dll", "basswma.dll");
 					}
@@ -271,11 +271,11 @@ namespace CritSounds
 				{
 					if (BytesToString(GetHashSha256("basswma.dll")) == SHA256_BassWMA64)
 					{
-						mod.Logger.InfoFormat("{0} basswma.dll hash code matches for a 64-bit process", mod.Name);
+						mod.Logger.Info("basswma.dll hash code matches for a 64-bit process");
 					}
 					else
 					{
-						mod.Logger.InfoFormat("{0} basswma.dll for 64-bit process does not match hash, redownloading...", mod.Name);
+						mod.Logger.Info("basswma.dll for 64-bit process does not match hash, redownloading...");
 						File.Delete("basswma.dll");
 						client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x64/basswma.dll", "basswma.dll");
 					}
@@ -283,13 +283,13 @@ namespace CritSounds
 				//WMA - 32 bit - file does not exist
 				if (!File.Exists("basswma.dll") && is64BitTerraria == false)
 				{
-					mod.Logger.InfoFormat("{0} basswma.dll for 32-bit process not found, downloading...", mod.Name);
+					mod.Logger.Info("basswma.dll for 32-bit process not found, downloading...");
 					client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x32/basswma.dll", "basswma.dll");
 				}
 				//WMA - 64 bit - file does not exist
 				if (!File.Exists("basswma.dll") && is64BitTerraria == true)
 				{
-					mod.Logger.InfoFormat("{0} basswma.dll for 64-bit process not found, downloading...", mod.Name);
+					mod.Logger.Info("basswma.dll for 64-bit process not found, downloading...");
 					client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Addons/x64/basswma.dll", "basswma.dll");
 				}
 			}

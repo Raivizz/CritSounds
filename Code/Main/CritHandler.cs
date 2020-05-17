@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace CritSounds
@@ -89,7 +90,7 @@ namespace CritSounds
 
             StreamType st = new StreamType();
 
-            if (crit == true && Config.MeleeStabCrits_Enabled == true && item.type != 1305)
+            if (crit == true && Config.MeleeStabCrits_Enabled == true && item.type != ItemID.TheAxe)
             {
                 //No mod files detected
                 if (MSCFiles.Count == 0)
@@ -123,7 +124,7 @@ namespace CritSounds
             }
 
             //Egg 01
-            if (crit == true && Config.MeleeStabCrits_Enabled == true && item.type == 1305)
+            if (crit == true && Config.MeleeStabCrits_Enabled == true && item.type == ItemID.TheAxe)
             {
                 if (new Random().Next(Egg1_SFXCount) == 1)
                 {
@@ -687,6 +688,8 @@ namespace CritSounds
                                 }
                             }
 
+
+
                             if ((!proj.ranged) && (!proj.melee) && (!proj.thrown) && (!proj.magic))
                             {
                                 if (TUCFiles.Count == 0)
@@ -729,7 +732,7 @@ namespace CritSounds
                         }
                         break;
                     default:
-                        mod.Logger.WarnFormat(mod.Name, " Default case for projectiles triggered. That's not good.");
+                        mod.Logger.Warn("Default case for projectiles triggered. That's not good.");
                         break;
                 }
             }

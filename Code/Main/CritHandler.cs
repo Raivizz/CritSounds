@@ -737,12 +737,5 @@ namespace CritSounds
                 }
             }
         }
-
-        public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
-        {
-            //Frees BASS resources whenever the player character dies
-            Bass.Free();
-            return true;
-        }
     }
 }

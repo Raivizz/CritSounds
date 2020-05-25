@@ -98,27 +98,28 @@ namespace CritSounds
 
                     if (new Random().Next(MSC_SFXCount) == 1)
                     {
-                        _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit01"), volumeScale: Config.MeleeStab_Volume);
+                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit01"), volumeScale: Config.MeleeStab_Volume);
                     }
                     if (new Random().Next(MSC_SFXCount) == 2)
                     {
-                        _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit02"), volumeScale: Config.MeleeStab_Volume);
+                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit02"), volumeScale: Config.MeleeStab_Volume);
                     }
                     if (new Random().Next(MSC_SFXCount) == 3)
                     {
-                        _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit03"), volumeScale: Config.MeleeStab_Volume);
+                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit03"), volumeScale: Config.MeleeStab_Volume);
                     }
                     if (new Random().Next(MSC_SFXCount) == 4)
                     {
-                        _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit04"), volumeScale: Config.MeleeStab_Volume);
+                        Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Melee_Stab/MeleeStab_Crit04"), volumeScale: Config.MeleeStab_Volume);
                     }
                 }
 
                 //At least one mod file exists.
-                if (MSCFiles != null || MSCFiles.Count != 0)
+                if ( MSCFiles.Count != 0)
                 {
+					_ = new StreamType().MSC_Stream;
                     st.MSC_Stream = Bass.CreateStream(MSCFiles[new Random().Next(MSCFiles.Count)]);
-                    _ = Bass.ChannelPlay(st.MSC_Stream, false);
+                    Bass.ChannelPlay(st.MSC_Stream);
                 }
                 return;
             }
@@ -128,75 +129,75 @@ namespace CritSounds
             {
                 if (new Random().Next(Egg1_SFXCount) == 1)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_01"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_01"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 2)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_02"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_02"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 3)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_03"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_03"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 4)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_04"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_04"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 5)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_05"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_05"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 6)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_06"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_06"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 7)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_07"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_07"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 8)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_08"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_08"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 9)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_09"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_09"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 10)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_10"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_10"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 11)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_11"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_11"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 12)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_12"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_12"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 13)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_13"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_13"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 14)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_14"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_14"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 15)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_15"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_15"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 16)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_16"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_16"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 17)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_17"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_17"), volumeScale: Config.Egg01_Volume);
                 }
                 if (new Random().Next(Egg1_SFXCount) == 18)
                 {
-                    _ = Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_18"), volumeScale: Config.Egg01_Volume);
+                    Main.PlaySound(50, x: (int)target.position.X, y: (int)target.position.Y, Style: mod.GetSoundSlot(SoundType.Custom, "Sounds/Crits/Eggs/EggSet01/ES1_18"), volumeScale: Config.Egg01_Volume);
                 }
             }
         }

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "h3w13Ejh1O0ytewczsHZmpFtqBKehW+NSEfXJvsY4ARv5vsTO+bH6Op6IjSzvFdHBHVT08CPRKseZ+VVtEBoSg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Raivis\\OneDrive\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\CritSounds\\CritSounds.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Raivis\\.nuget\\packages\\managedbass\\3.0.0\\managedbass.3.0.0.nupkg.sha512",
+    "C:\\Users\\Raivis\\.nuget\\packages\\tmodloader.codeassist\\0.1.1\\tmodloader.codeassist.0.1.1.nupkg.sha512"
+  ],
+  "logs": []
+}

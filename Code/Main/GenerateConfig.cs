@@ -1,195 +1,163 @@
-﻿using System.IO;
-using Terraria;
-using Terraria.IO;
+﻿using System.ComponentModel;
+using Terraria.ModLoader.Config;
 
 namespace CritSounds
 {
-    public static class Config
+    [Label("Crit Sounds Configuration")]
+    public class CritSoundsConfig : ModConfig
     {
-        /// <summary>Enable crit sounds on melee stabs.</summary>
-        internal static bool MeleeStabCrits_Enabled = true;
-        /// <summary>Changes the volume of melee stabbing crits</summary>
-        internal static float MeleeStab_Volume = 1f;
+        public override ConfigScope Mode => ConfigScope.ClientSide;
+        public static CritSoundsConfig Instance;
 
-        /// <summary>Enable projectile crit handlers.</summary>
-        internal static bool ProjectileCrits_Enabled = true;
+        [Header("Crit Toggles")]
 
-        /// <summary>Enables crit sounds for arrow projectiles.</summary>
-        internal static bool ProjectileCrits_TypeArrow_Enabled = true;
-        /// <summary>Changes the volume of arrow projectiles or modded ranged weapons</summary>
-        internal static float TypeArrow_Volume = 1f;
+        [Label("Melee Stab Crits")]
+        [Tooltip("Enable crit sounds for melee stabs")]
+        [DefaultValue(true)]
+        public bool MeleeStabCrits_Enabled = true;
 
-        /// <summary>Enables crit sounds for Throwing projectiles.</summary>
-        internal static bool ProjectileCrits_TypeThrowing_Enabled = true;
-        /// <summary>Changes the volume of throw-able weapons or modded throwing-type weapons</summary>
-        internal static float TypeThrowing_Volume = 1f;
+        [Label("General Projectile Crits")]
+        [Tooltip("Enable projectile crit handlers")]
+        [DefaultValue(true)]
+        public bool ProjectileCrits_Enabled = true;
 
-        /// <summary>Enables crit sounds for magic projectiles.</summary>
-        internal static bool ProjectileCrits_TypeSpell_Enabled = true;
-        /// <summary>Changes the volume of magic-based weapons</summary>
-        internal static float TypeSpell_Volume = 1f;
+        [Label("Arrow Projectile Crits")]
+        [Tooltip("Enable crit sounds for arrow projectiles")]
+        [DefaultValue(true)]
+        public bool ProjectileCrits_TypeArrow_Enabled = true;
 
-        /// <summary>Enables crit sounds for bullet projectiles.</summary>
-        internal static bool ProjectileCrits_TypeBullet_Enabled = true;
-        /// <summary>Changes the volume of bullet-based vanilla weapons</summary>
-        internal static float TypeBullet_Volume = 1f;
+        [Label("Throwing Projectile Crits")]
+        [Tooltip("Enable crit sounds for throwing projectile crits")]
+        [DefaultValue(true)]
+        public bool ProjectileCrits_TypeThrowing_Enabled = true;
 
-        /// <summary>Enables crit sounds for melee projectiles and weaponry.</summary>
-        internal static bool ProjectileCrits_TypeMelee_Enabled = true;
-        /// <summary>Changes the volume of melee-based ranged weaponry, yoyos, or modded melee-damage-type weapons</summary>
-        internal static float TypeMelee_Volume = 1f;
+        [Label("Magic Projectile Crits")]
+        [Tooltip("Enable crit sounds for magic projectile crits")]
+        [DefaultValue(true)]
+        public bool ProjectileCrits_TypeSpell_Enabled = true;
 
-        /// <summary>Enables crit sounds for summoned entities.</summary>
-        internal static bool ProjectileCrits_TypeSummon_Enabled = true;
-        /// <summary>Changes the volume of summoned minions and sentries</summary>
-        internal static float TypeSummon_Volume = 1f;
+        [Label("Bullet Projectile Crits")]
+        [Tooltip("Enable crit sounds for bullet projectile crits")]
+        [DefaultValue(true)]
+        public bool ProjectileCrits_TypeBullet_Enabled = true;
 
-        /// <summary>Enables crit sounds for miscellaneous projectiles.</summary>
-        internal static bool ProjectileCrits_TypeMisc_Enabled = true;
-        /// <summary>Changes the volume of miscellaneous projectiles, such as seeds and others.</summary>
-        internal static float TypeMisc_Volume = 1f;
+        [Label("Melee Projectile Crits")]
+        [Tooltip("Enable crit sounds for melee projectile and weaponry crits")]
+        [DefaultValue(true)]
+        public bool ProjectileCrits_TypeMelee_Enabled = true;
 
-        /// <summary>Enables crit sounds for undefined projectiles.</summary>
-        internal static bool ProjectileCrits_TypeUnknown_Enabled = true;
-        /// <summary>Changes the volume of undefined projectiles, mostly modded weapons with custom damage types or modded summoner weapons.</summary>
-        internal static float TypeUnknown_Volume = 1f;
+        [Label("Summoning Projectile Crits")]
+        [Tooltip("Enable crit sounds for summoned entities and whips")]
+        [DefaultValue(true)]
+        public bool ProjectileCrits_TypeSummon_Enabled = true;
 
-        /// <summary>Changes the volume for the Egg 01 batch. If you think I'm gonna spoil it here for ya, you're wrong. Then again, you are reading the code, so you might as well just find where this is looked up and just trace the item ID.</summary>
-        internal static float Egg01_Volume = 1f;
+        [Label("Miscellaneous Projectile Crits")]
+        [Tooltip("Enable crit sounds for miscellaneous projectile crits")]
+        [DefaultValue(true)]
+        public bool ProjectileCrits_TypeMisc_Enabled = true;
 
-        //Custom sound volume
-        /// <summary>Change the volume of custom melee stabbing crit sounds.</summary>
-        internal static float Mod_MeleeStab_Volume = 1f;
-        /// <summary>Change the volume of custom arrow-based weapon crit sounds.</summary>
-        internal static float Mod_TypeArrow_Volume = 1f;
-        /// <summary>Change the volume of custom throw-able weaponry crit sounds.</summary>
-        internal static float Mod_TypeThrowing_Volume = 1f;
-        /// <summary>Change the volume of custom magic-based weaponry crit sounds.</summary>
-        internal static float Mod_TypeSpell_Volume = 1f;
-        /// <summary>Change the volume of custom bullet-based weaponry crit sounds.</summary>
-        internal static float Mod_TypeBullet_Volume = 1f;
-        /// <summary>Change the volume of custom melee-based crit sounds.</summary>
-        internal static float Mod_TypeMelee_Volume = 1f;
-        /// <summary>Change the volume of custom summoned entity crit sounds</summary>
-        internal static float Mod_TypeSummon_Volume = 1f;
-        /// <summary>Change the volume of custom miscellaneous projectile crit sounds.</summary>
-        internal static float Mod_TypeMisc_Volume = 1f;
-        /// <summary>Change the volume of unknown projectile crit sounds.</summary>
-        internal static float Mod_TypeUnknown_Volume = 1f;
+        [Label("Unknown Projectile Crits")]
+        [Tooltip("Enable crit sounds for undefined projectile crits")]
+        [DefaultValue(true)]
+        public bool ProjectileCrits_TypeUnknown_Enabled = true;
 
-        /// <summary>Enables AAC addon support for BASS. bass_aac.dll weighs 147KB</summary>
-        internal static bool BASSAddon_EnableAACAddon = false;
-        /// <summary>Enables FLAC addon support for BASS. bassflac.dll weighs 25KB</summary>
-        internal static bool BASSAddon_EnableFLACAddon = false;
-        /// <summary>Enables OPUS addon support for BASS. bassopus.dll weighs 68KB</summary>
-        internal static bool BASSAddon_EnableOPUSAddon = false;
-        /// <summary>Enables WMA addon support for BASS. basswma.dll weighs 18KB</summary>
-        internal static bool BASSAddon_EnableWMAAddon = false;
-        private static readonly string ConfigPath = Path.Combine(Main.SavePath, "Mod Configs", "Crit Sounds v13.json");
-        private static readonly Preferences Configuration = new Preferences(ConfigPath);
+        [Header("Built-in Crit Sounds Volume")]
 
-        public static void Load()
-        {
-            bool success = ReadConfig();
+        [Label("Melee Stab Crits - Volume")]
+        [Tooltip("Volume of melee stab crits")]
+        [DefaultValue(1f)]
+        public float MeleeStab_Volume = 1f;
 
-            if (!success)
-            {
-                CreateConfig();
-            }
-        }
+        [Label("Arrow Projectile Crits - Volume")]
+        [Tooltip("Volume of arrow projectile or modded ranged weapon crits")]
+        [DefaultValue(1f)]
+        public float TypeArrow_Volume = 1f;
 
-        private static bool ReadConfig()
-        {
-            if (Configuration.Load())
-            {
-                Configuration.Get("MeleeStabCrits_Enabled", ref MeleeStabCrits_Enabled);
+        [Label("Throwing Projectile Crits - Volume")]
+        [Tooltip("Volume of throwable weapon or modded throwing-type weapon crits")]
+        [DefaultValue(1f)]
+        public float TypeThrowing_Volume = 1f;
 
-                Configuration.Get("ProjectileCrits_Enabled", ref ProjectileCrits_Enabled);
-                Configuration.Get("ProjectileCrits_TypeArrow_Enabled", ref ProjectileCrits_TypeArrow_Enabled);
-                Configuration.Get("ProjectileCrits_TypeThrowing_Enabled", ref ProjectileCrits_TypeThrowing_Enabled);
-                Configuration.Get("ProjectileCrits_TypeSpell_Enabled", ref ProjectileCrits_TypeSpell_Enabled);
-                Configuration.Get("ProjectileCrits_TypeBullet_Enabled", ref ProjectileCrits_TypeBullet_Enabled);
-                Configuration.Get("ProjectileCrits_TypeMelee_Enabled", ref ProjectileCrits_TypeMelee_Enabled);
-                Configuration.Get("ProjectileCrits_TypeSummon_Enabled", ref ProjectileCrits_TypeSummon_Enabled);
-                Configuration.Get("ProjectileCrits_TypeMisc_Enabled", ref ProjectileCrits_TypeMisc_Enabled);
-                Configuration.Get("ProjectileCrits_TypeUnknown_Enabled", ref ProjectileCrits_TypeUnknown_Enabled);
+        [Label("Magic Projectile Crits - Volume")]
+        [Tooltip("Volume of magic-based weapon crits")]
+        [DefaultValue(1f)]
+        public float TypeSpell_Volume = 1f;
 
-                Configuration.Get("MeleeStab_Volume", ref MeleeStab_Volume);
-                Configuration.Get("TypeArrow_Volume", ref TypeArrow_Volume);
-                Configuration.Get("TypeThrowing_Volume", ref TypeThrowing_Volume);
-                Configuration.Get("TypeSpell_Volume", ref TypeSpell_Volume);
-                Configuration.Get("TypeBullet_Volume", ref TypeBullet_Volume);
-                Configuration.Get("TypeMelee_Volume", ref TypeMelee_Volume);
-                Configuration.Get("TypeSummon_Volume", ref TypeSummon_Volume);
-                Configuration.Get("TypeMisc_Volume", ref TypeMisc_Volume);
-                Configuration.Get("TypeUnknown_Volume", ref TypeUnknown_Volume);
+        [Label("Bullet Projectile Crits - Volume")]
+        [Tooltip("Volume of bullet-based vanilla weapon crits")]
+        [DefaultValue(1f)]
+        public float TypeBullet_Volume = 1f;
 
-                Configuration.Get("Egg01_Volume", ref Egg01_Volume);
+        [Label("Melee Projectile Crits - Volume")]
+        [Tooltip("Volume of melee-based ranged weaponry, yoyo or modded melee-damage-type weapon crits")]
+        [DefaultValue(1f)]
+        public float TypeMelee_Volume = 1f;
 
-                Configuration.Get("Mod_MeleeStab_Volume", ref Mod_MeleeStab_Volume);
-                Configuration.Get("Mod_TypeArrow_Volume", ref Mod_TypeArrow_Volume);
-                Configuration.Get("Mod_TypeThrowing_Volume", ref Mod_TypeThrowing_Volume);
-                Configuration.Get("Mod_TypeSpell_Volume", ref Mod_TypeSpell_Volume);
-                Configuration.Get("Mod_TypeBullet_Volume", ref Mod_TypeBullet_Volume);
-                Configuration.Get("Mod_TypeMelee_Volume", ref Mod_TypeMelee_Volume);
-                Configuration.Get("Mod_TypeSummon_Volume", ref Mod_TypeSummon_Volume);
-                Configuration.Get("Mod_TypeMisc_Volume", ref Mod_TypeMisc_Volume);
-                Configuration.Get("Mod_TypeUnknown_Volume", ref Mod_TypeUnknown_Volume);
+        [Label("Summoning Projectile Crits - Volume")]
+        [Tooltip("Volume of summoned entity and whip crits")]
+        [DefaultValue(1f)]
+        public float TypeSummon_Volume = 1f;
 
-                Configuration.Get("BASSAddon_EnableAACAddon", ref BASSAddon_EnableAACAddon);
-                Configuration.Get("BASSAddon_EnableFLACAddon", ref BASSAddon_EnableFLACAddon);
-                Configuration.Get("BASSAddon_EnableOPUSAddon", ref BASSAddon_EnableOPUSAddon);
-                Configuration.Get("BASSAddon_EnableWMAAddon", ref BASSAddon_EnableWMAAddon);
+        [Label("Miscellaneous Projectile Crits - Volume")]
+        [Tooltip("Volume of miscellaneous projectile, such as seeds, and other such type crits")]
+        [DefaultValue(1f)]
+        public float TypeMisc_Volume = 1f;
 
-                return true;
-            }
-            return false;
-        }
+        [Label("Unknown Projectile Crits - Volume")]
+        [Tooltip("Volume of undefined projectile crits")]
+        [DefaultValue(1f)]
+        public float TypeUnknown_Volume = 1f;
 
-        private static void CreateConfig()
-        {
-            Configuration.Clear();
+        [Label("Egg 01 Crits - Volume")]
+        [Tooltip("Volume of Easter Egg Set 01 crits")]
+        [DefaultValue(1f)]
+        public float Egg01_Volume = 1f;
 
-            Configuration.Put("MeleeStabCrits_Enabled", MeleeStabCrits_Enabled);
+        [Header("Custom Crit Sounds Volume")]
 
-            Configuration.Put("ProjectileCrits_Enabled", ProjectileCrits_Enabled);
-            Configuration.Put("ProjectileCrits_TypeArrow_Enabled", ProjectileCrits_TypeArrow_Enabled);
-            Configuration.Put("ProjectileCrits_TypeThrowing_Enabled", ProjectileCrits_TypeThrowing_Enabled);
-            Configuration.Put("ProjectileCrits_TypeSpell_Enabled", ProjectileCrits_TypeSpell_Enabled);
-            Configuration.Put("ProjectileCrits_TypeBullet_Enabled", ProjectileCrits_TypeBullet_Enabled);
-            Configuration.Put("ProjectileCrits_TypeMelee_Enabled", ProjectileCrits_TypeMelee_Enabled);
-            Configuration.Put("ProjectileCrits_TypeSummon_Enabled", ProjectileCrits_TypeSummon_Enabled);
-            Configuration.Put("ProjectileCrits_TypeMisc_Enabled", ProjectileCrits_TypeMisc_Enabled);
-            Configuration.Put("ProjectileCrits_TypeUnknown_Enabled", ProjectileCrits_TypeUnknown_Enabled);
+        [Label("Custom Melee Stab Crits - Volume")]
+        [Tooltip("Volume of custom melee stabbing crits")]
+        [DefaultValue(1f)]
+        public float Mod_MeleeStab_Volume = 1f;
 
-            Configuration.Put("MeleeStab_Volume", MeleeStab_Volume);
-            Configuration.Put("TypeArrow_Volume", TypeArrow_Volume);
-            Configuration.Put("TypeThrowing_Volume", TypeThrowing_Volume);
-            Configuration.Put("TypeSpell_Volume", TypeSpell_Volume);
-            Configuration.Put("TypeBullet_Volume", TypeBullet_Volume);
-            Configuration.Put("TypeMelee_Volume", TypeMelee_Volume);
-            Configuration.Put("TypeSummon_Volume", TypeSummon_Volume);
-            Configuration.Put("TypeMisc_Volume", TypeMisc_Volume);
-            Configuration.Put("TypeUnknown_Volume", TypeUnknown_Volume);
+        [Label("Custom Arrow Crits - Volume")]
+        [Tooltip("Volume of custom arrow-based weapon crits")]
+        [DefaultValue(1f)]
+        public float Mod_TypeArrow_Volume = 1f;
 
-            Configuration.Put("Egg01_Volume", Egg01_Volume);
+        [Label("Custom Throwing Crits - Volume")]
+        [Tooltip("Volume of custom throwing-based weapon crits")]
+        [DefaultValue(1f)]
+        public float Mod_TypeThrowing_Volume = 1f;
 
-            Configuration.Put("Mod_MeleeStab_Volume", Mod_MeleeStab_Volume);
-            Configuration.Put("Mod_TypeArrow_Volume", Mod_TypeArrow_Volume);
-            Configuration.Put("Mod_TypeThrowing_Volume", Mod_TypeThrowing_Volume);
-            Configuration.Put("Mod_TypeSpell_Volume", Mod_TypeSpell_Volume);
-            Configuration.Put("Mod_TypeBullet_Volume", Mod_TypeBullet_Volume);
-            Configuration.Put("Mod_TypeMelee_Volume", Mod_TypeMelee_Volume);
-            Configuration.Put("Mod_TypeSummon_Volume", Mod_TypeSummon_Volume);
-            Configuration.Put("Mod_TypeMisc_Volume", Mod_TypeMisc_Volume);
-            Configuration.Put("Mod_TypeUnknown_Volume", Mod_TypeUnknown_Volume);
+        [Label("Custom Magic Crits- - Volume")]
+        [Tooltip("Volume of custom magic-based weapon crits")]
+        [DefaultValue(1f)]
+        public float Mod_TypeSpell_Volume = 1f;
 
-            Configuration.Put("BASSAddon_EnableAACAddon", BASSAddon_EnableAACAddon);
-            Configuration.Put("BASSAddon_EnableFLACAddon", BASSAddon_EnableFLACAddon);
-            Configuration.Put("BASSAddon_EnableOPUSAddon", BASSAddon_EnableOPUSAddon);
-            Configuration.Put("BASSAddon_EnableWMAAddon", BASSAddon_EnableWMAAddon);
+        [Label("Custom Bullet Crits - Volume")]
+        [Tooltip("Volume of custom bullet-based weapon crits")]
+        [DefaultValue(1f)]
+        public float Mod_TypeBullet_Volume = 1f;
 
-            Configuration.Save();
-        }
+        [Label("Custom Melee Crits - Volume")]
+        [Tooltip("Volume of custom melee-based weapon crits")]
+        [DefaultValue(1f)]
+        public float Mod_TypeMelee_Volume = 1f;
+
+        [Label("Custom Summon Crits - Volume")]
+        [Tooltip("Volume of custom summon-based weapon crits")]
+        [DefaultValue(1f)]
+        public float Mod_TypeSummon_Volume = 1f;
+
+        [Label("Custom Misc Crits - Volume")]
+        [Tooltip("Volume of custom misc-based weapon crits")]
+        [DefaultValue(1f)]
+        public float Mod_TypeMisc_Volume = 1f;
+
+        [Label("Custom Unknown Crits - Volume")]
+        [Tooltip("Volume of custom unknown weapon crits")]
+        [DefaultValue(1f)]
+        public float Mod_TypeUnknown_Volume = 1f;
     }
 }

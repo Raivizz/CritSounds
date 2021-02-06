@@ -1,56 +1,12 @@
 using ManagedBass;
-using System;
-using System.IO;
-using System.Net;
-using System.Security.Cryptography;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace CritSounds
 {
     internal class CritSounds : Mod
     {
-        //Bit shenanigans
-        private readonly SHA256 Sha256 = SHA256.Create();
-        internal bool is64BitTerraria = false;
-
-        //SHA256 hashes
-        private readonly string SHA256_Bass32 = "3cd00f456f51829eda119e0e133acc1e45a5930d61fc335a2e9aa688a836a24d";
-        private readonly string SHA256_Bass64 = "c5d61ec9f9d16ebafd4403a270896226bb30bf28d3e9462e38ebb97b86c3f115";
-
-        //Hash calculation stuff
-        private byte[] GetHashSha256(string filename)
-        {
-            using (FileStream stream = File.OpenRead(filename))
-            {
-                return Sha256.ComputeHash(stream);
-            }
-        }
-        public static string BytesToString(byte[] bytes)
-        {
-            string result = "";
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                byte b = bytes[i];
-                result += b.ToString("x2");
-            }
-
-            return result;
-        }
-
-        //64-bit process check
-        private bool Is64Bit()
-        {
-            if (IntPtr.Size == 8)
-            {
-                is64BitTerraria = true;
-                return true;
-            }
-            else
-            {
-                is64BitTerraria = false;
-                return false;
-            }
-        }
+        public bool LoadedFKTModSettings = false;
 
         public CritSounds()
         {
@@ -66,61 +22,114 @@ namespace CritSounds
 
         public override void Load()
         {
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            using (WebClient client = new WebClient())
+            Config.Load();
+
+            LoadedFKTModSettings = ModLoader.GetMod("FKTModSettings") != null;
+            if (LoadedFKTModSettings)
             {
-                CritSoundsConfig csc = new CritSoundsConfig();
-                CritSFXHandler csh = new CritSFXHandler();
-
-                csh.CheckDirectoriesForMods();
-                Is64Bit();
-
-                //If bass.dll exists and Terraria process is 32-bit, checks for the file hash and re-downloads it if it's not the proper 32-bit library.
-                if (File.Exists("bass.dll") && is64BitTerraria == false)
-                {
-                    if (BytesToString(GetHashSha256("bass.dll")) == SHA256_Bass32)
-                    {
-                        Logger.Info("| bass.dll hash code matches for a 32-bit process");
-                    }
-                    else
-                    {
-                        Logger.Info("| bass.dll for 32-bit process does not match hash, redownloading...");
-                        File.Delete("bass.dll");
-                        client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x32/bass.dll", "bass.dll");
-                    }
-                }
-
-                //If bass.dll exists and Terraria process is 64-bit, checks for the file hash and re-downloads it if it's not the proper 64-bit library.
-                if (File.Exists("bass.dll") && is64BitTerraria == true)
-                {
-                    if (BytesToString(GetHashSha256("bass.dll")) == SHA256_Bass64)
-                    {
-                        Logger.Info("bass.dll hash code matches for a 64-bit process");
-                        Bass.Init();
-                    }
-                    else
-                    {
-                        Logger.Info("bass.dll for 64-bit process does not match hash, redownloading...");
-                        File.Delete("bass.dll");
-                        client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x64/bass.dll", "bass.dll");
-                    }
-                }
-                //Downloads the 32-bit BASS library if it doesn't exist
-                if (!File.Exists("bass.dll") && is64BitTerraria == false)
-                {
-                    Logger.Info("bass.dll for 32-bit process not found, downloading...");
-                    client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x32/bass.dll", "bass.dll");
-                }
-
-                //Downloads the 64-bit BASS library if it doesn't exist
-                if (!File.Exists("bass.dll") && is64BitTerraria == true)
-                {
-                    Logger.Info("bass.dll for 64-bit process not found, downloading...");
-                    client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x64/bass.dll", "bass.dll");
-                }
+                try { LoadModSettings(); }
+                catch { }
             }
-            Bass.Init();
+        }
+
+        private void LoadModSettings()
+        {
+            FKTModSettings.ModSetting setting = FKTModSettings.ModSettingsAPI.CreateModSettingConfig(this);
+            setting.EnableAutoConfig();
+
+            setting.AddComment("Welcome to the Critical Tweakery Menu!");
+
+            setting.AddBool("MeleeStabCrits_Enabled", "Enable crit sounds for melee stabs", false);
+            setting.AddBool("ProjectileCrits_Enabled", "Enable projectile crits", false);
+
+            setting.AddComment("If projectile crits are enabled, the settings below can be used to toggle and change the volume of crit sounds for specific projectile types");
+
+            setting.AddBool("ProjectileCrits_TypeArrow_Enabled", "Enable crit sounds for arrow-based weapons", false);
+            setting.AddBool("ProjectileCrits_TypeThrowing_Enabled", "Enable crit sounds for throw-able weapons", false);
+            setting.AddBool("ProjectileCrits_TypeSpell_Enabled", "Enable crit sounds for magic weapons", false);
+            setting.AddBool("ProjectileCrits_TypeBullet_Enabled", "Enable crit sounds for bullet-based weapons", false);
+            setting.AddBool("ProjectileCrits_TypeMelee_Enabled", "Enable crit sounds for projectile-based ranged weaponry", false);
+            setting.AddBool("ProjectileCrits_TypeSummon_Enabled", "Enable crit sounds for summoned entities", false);
+            setting.AddBool("ProjectileCrits_TypeMisc_Enabled", "Enable crit sounds for miscellaneous projectiles", false);
+            setting.AddBool("ProjectileCrits_TypeUnknown_Enabled", "Enable crit sounds for undefined projectiles", false);
+
+            //Vanilla volume
+            setting.AddComment("Pack-in sounds - volume section");
+            setting.AddFloat("MeleeStab_Volume", "Change the volume of melee stab crits", 0f, 1f, false);
+            setting.AddFloat("TypeArrow_Volume", "Changes the volume of arrow crits", 0f, 1f, false);
+            setting.AddFloat("TypeThrowing_Volume", "Change the volume of throw-able crits", 0f, 1f, false);
+            setting.AddFloat("TypeSpell_Volume", "Change the volume of magic crits", 0f, 1f, false);
+            setting.AddFloat("TypeBullet_Volume", "Change the volume of bullet crits", 0f, 1f, false);
+            setting.AddFloat("TypeMelee_Volume", "Change the volume of melee projectile crits", 0f, 1f, false);
+            setting.AddFloat("TypeSummon_Volume", "Change the volume of summon crits", 0f, 1f, false);
+            setting.AddFloat("TypeMisc_Volume", "Change the volume of miscellaneous crits", 0f, 1f, false);
+            setting.AddFloat("Egg01_Volume", "Change the volume of Egg 01", 0f, 1f, false);
+
+            //Mod volume
+            setting.AddComment("Custom sounds - volume section");
+            setting.AddFloat("Mod_MeleeStab_Volume", "Change the volume of custom melee stab crits", 0f, 1f, false);
+            setting.AddFloat("Mod_TypeArrow_Volume", "Change the volume of custom arrow crits", 0f, 1f, false);
+            setting.AddFloat("Mod_TypeThrowing_Volume", "Change the volume of custom throw-able crits", 0f, 1f, false);
+            setting.AddFloat("Mod_TypeSpell_Volume", "Change the volume of custom magic crits", 0f, 1f, false);
+            setting.AddFloat("Mod_TypeBullet_Volume", "Change the volume of custom bullet crits", 0f, 1f, false);
+            setting.AddFloat("Mod_TypeMelee_Volume", "Change the volume of custom melee projectile crits", 0f, 1f, false);
+            setting.AddFloat("Mod_TypeSummon_Volume", "Change the volume of custom summon crits", 0f, 1f, false);
+            setting.AddFloat("Mod_TypeMisc_Volume", "Change the volume of custom miscellaneous crits", 0f, 1f, false);
+            setting.AddFloat("Mod_TypeUnknown_Volume", "Change the volume of custom unknown projectile crits", 0f, 1f, false);
+        }
+
+        public override void PostUpdateInput()
+        {
+            if (LoadedFKTModSettings && !Main.gameMenu)
+            {
+                try { UpdateModSettings(); }
+                catch { }
+            }
+        }
+
+        private void UpdateModSettings()
+        {
+
+            if (FKTModSettings.ModSettingsAPI.TryGetModSetting(this, out FKTModSettings.ModSetting setting))
+            {
+                setting.Get("MeleeStabCrits_Enabled", ref Config.MeleeStabCrits_Enabled);
+                setting.Get("MeleeStab_Volume", ref Config.MeleeStab_Volume);
+                setting.Get("ProjectileCrits_Enabled", ref Config.ProjectileCrits_Enabled);
+                setting.Get("ProjectileCrits_TypeArrow_Enabled", ref Config.ProjectileCrits_TypeArrow_Enabled);
+                setting.Get("TypeArrow_Volume", ref Config.TypeArrow_Volume);
+                setting.Get("ProjectileCrits_TypeThrowing_Enabled", ref Config.ProjectileCrits_TypeThrowing_Enabled);
+                setting.Get("TypeThrowing_Volume", ref Config.TypeThrowing_Volume);
+                setting.Get("ProjectileCrits_TypeSpell_Enabled", ref Config.ProjectileCrits_TypeSpell_Enabled);
+                setting.Get("TypeSpell_Volume", ref Config.TypeSpell_Volume);
+                setting.Get("ProjectileCrits_TypeBullet_Enabled", ref Config.ProjectileCrits_TypeBullet_Enabled);
+                setting.Get("TypeBullet_Volume", ref Config.TypeBullet_Volume);
+                setting.Get("ProjectileCrits_TypeMelee_Enabled", ref Config.ProjectileCrits_TypeMelee_Enabled);
+                setting.Get("TypeMelee_Volume", ref Config.TypeMelee_Volume);
+                setting.Get("ProjectileCrits_TypeSummon_Enabled", ref Config.ProjectileCrits_TypeSummon_Enabled);
+                setting.Get("TypeSummon_Volume", ref Config.TypeSummon_Volume);
+                setting.Get("ProjectileCrits_TypeMisc_Enabled", ref Config.ProjectileCrits_TypeMisc_Enabled);
+                setting.Get("TypeMisc_Volume", ref Config.TypeMisc_Volume);
+                setting.Get("ProjectileCrits_TypeUnknown_Enabled", ref Config.ProjectileCrits_TypeUnknown_Enabled);
+                setting.Get("TypeUnknown_Volume", ref Config.TypeUnknown_Volume);
+
+                setting.Get("Egg01_Volume", ref Config.Egg01_Volume);
+
+                setting.Get("Mod_MeleeStab_Volume", ref Config.Mod_MeleeStab_Volume);
+                setting.Get("Mod_TypeArrow_Volume", ref Config.Mod_TypeArrow_Volume);
+                setting.Get("Mod_TypeThrowing_Volume", ref Config.Mod_TypeThrowing_Volume);
+                setting.Get("Mod_TypeSpell_Volume", ref Config.Mod_TypeSpell_Volume);
+                setting.Get("Mod_TypeBullet_Volume", ref Config.Mod_TypeBullet_Volume);
+                setting.Get("Mod_TypeMelee_Volume", ref Config.Mod_TypeMelee_Volume);
+                setting.Get("Mod_TypeSummon_Volume", ref Config.Mod_TypeSummon_Volume);
+                setting.Get("Mod_TypeMisc_Volume", ref Config.Mod_TypeMisc_Volume);
+                setting.Get("Mod_TypeUnknown_Volume", ref Config.Mod_TypeUnknown_Volume);
+            }
+        }
+
+        public override void PreSaveAndQuit()
+        {
+            Bass.Free();
+            AddonHandler.UnloadAddons();
         }
     }
 }

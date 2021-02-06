@@ -6,5 +6,6 @@ Current features include:
 • Original crit sounds for 8 different projectile categories (as well as stabbing with melee weaponry)!
 • Possibility to easily add your own sounds!
 • Easter eggs!
+• Mod Settings Configurator (by Flashkirby99) support.
 
 Changelog and extra download links are provided in the mod's linked forum post.

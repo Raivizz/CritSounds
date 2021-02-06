@@ -5,7 +5,6 @@ namespace CritSounds
 {
     public class CritModdingFramework
     {
-        public static CritModdingFramework Instance;
 
         internal string MH_CritModFolder = Main.SavePath + Path.DirectorySeparatorChar.ToString() + "Crit Sounds";
 
@@ -38,18 +37,18 @@ namespace CritSounds
 
         public void CreateDirectories()
         {
-            Directory.CreateDirectory(MH_CritModFolder);
+            _ = Directory.CreateDirectory(MH_CritModFolder);
 
             //Creates directories for all projectile categories
-            Directory.CreateDirectory(MSC_P);
-            Directory.CreateDirectory(TAC_P);
-            Directory.CreateDirectory(TTC_P);
-            Directory.CreateDirectory(TSC_P);
-            Directory.CreateDirectory(TBP_P);
-            Directory.CreateDirectory(TMP_P);
-            Directory.CreateDirectory(TSuC_P);
-            Directory.CreateDirectory(TMiC_P);
-            Directory.CreateDirectory(TUC_P);
+            _ = Directory.CreateDirectory(MSC_P);
+            _ = Directory.CreateDirectory(TAC_P);
+            _ = Directory.CreateDirectory(TTC_P);
+            _ = Directory.CreateDirectory(TSC_P);
+            _ = Directory.CreateDirectory(TBP_P);
+            _ = Directory.CreateDirectory(TMP_P);
+            _ = Directory.CreateDirectory(TSuC_P);
+            _ = Directory.CreateDirectory(TMiC_P);
+            _ = Directory.CreateDirectory(TUC_P);
         }
     }
 }

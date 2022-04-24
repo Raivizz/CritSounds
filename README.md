@@ -1,12 +1,10 @@
 # CritSounds 1.4
 Welcome to the experimental 1.4 tModLoader Crit Sounds repository!
 
-This repository contains a version of Crit Sounds tempered for the upcoming 1.4 tModLoader release.
+This repository contains a version of Crit Sounds tempered for the stable 1.4 tModLoader branch.
 
-Currently uses in-game sounds instead of packed-in ones for non-custom crits.
+# Current major changes
 
-Custom crits seem to work absolutely fine.
-
-Enumeration currently not updated for vanilla 1.4.
+Enumeration removed. Mod now purely DamageClass-based.
 
 Additional codecs removed. As fun as implementing them was, the general consensus even amongst the tModLoader devs seems that it's an absolutely worthless addition.

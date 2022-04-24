@@ -1,7 +1,7 @@
 using ManagedBass;
-using System;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using Terraria.ModLoader;
 
@@ -9,13 +9,10 @@ namespace CritSounds
 {
     internal class CritSounds : Mod
     {
-        //Bit shenanigans
         private readonly SHA256 Sha256 = SHA256.Create();
-        internal bool is64BitTerraria = false;
 
-        //SHA256 hashes
-        private readonly string SHA256_Bass32 = "3cd00f456f51829eda119e0e133acc1e45a5930d61fc335a2e9aa688a836a24d";
-        private readonly string SHA256_Bass64 = "c5d61ec9f9d16ebafd4403a270896226bb30bf28d3e9462e38ebb97b86c3f115";
+        //SHA256 hash
+        private readonly string SHA256_Bass64 = "4bbb323f48fa7ea549abd59ecfc30e71b574d20f52e295b7e3ebf19f07f53efe";
 
         //Hash calculation stuff
         private byte[] GetHashSha256(string filename)
@@ -37,86 +34,48 @@ namespace CritSounds
             return result;
         }
 
-        //64-bit process check
-        private bool Is64Bit()
-        {
-            if (IntPtr.Size == 8)
-            {
-                is64BitTerraria = true;
-                return true;
-            }
-            else
-            {
-                is64BitTerraria = false;
-                return false;
-            }
-        }
-
         public CritSounds()
         {
-            CritModdingFramework critDir = new CritModdingFramework();
-            Properties = new ModProperties()
-            {
-                Autoload = true,
-                AutoloadSounds = true
-            };
-
-            critDir.CreateDirectories();
+            CritModdingDirectories CS = new();
+            CS.CreateDirectories();
         }
 
         public override void Load()
         {
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            using (WebClient client = new WebClient())
+            using (WebClient client = new())
             {
-                CritSoundsConfig csc = new CritSoundsConfig();
-                CritSFXHandler csh = new CritSFXHandler();
+                CritSoundsConfig csc = new();
+                CritSFXHandler csh = new();
 
                 csh.CheckDirectoriesForMods();
-                Is64Bit();
 
-                //If bass.dll exists and Terraria process is 32-bit, checks for the file hash and re-downloads it if it's not the proper 32-bit library.
-                if (File.Exists("bass.dll") && is64BitTerraria == false)
-                {
-                    if (BytesToString(GetHashSha256("bass.dll")) == SHA256_Bass32)
-                    {
-                        Logger.Info("| bass.dll hash code matches for a 32-bit process");
-                    }
-                    else
-                    {
-                        Logger.Info("| bass.dll for 32-bit process does not match hash, redownloading...");
-                        File.Delete("bass.dll");
-                        client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x32/bass.dll", "bass.dll");
-                    }
-                }
-
-                //If bass.dll exists and Terraria process is 64-bit, checks for the file hash and re-downloads it if it's not the proper 64-bit library.
-                if (File.Exists("bass.dll") && is64BitTerraria == true)
+                //If bass.dll exists, checks for the file hash and re-downloads it if the hash check fails.
+                if (File.Exists("bass.dll"))
                 {
                     if (BytesToString(GetHashSha256("bass.dll")) == SHA256_Bass64)
                     {
-                        Logger.Info("bass.dll hash code matches for a 64-bit process");
+                        Logger.Info("bass.dll hash code matches");
                         Bass.Init();
                     }
                     else
                     {
-                        Logger.Info("bass.dll for 64-bit process does not match hash, redownloading...");
+                        Logger.Info("bass.dll does not match hash, redownloading...");
                         File.Delete("bass.dll");
-                        client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x64/bass.dll", "bass.dll");
+                        client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/1.4_port/Dependencies/bass.dll", "bass.dll");
                     }
                 }
-                //Downloads the 32-bit BASS library if it doesn't exist
-                if (!File.Exists("bass.dll") && is64BitTerraria == false)
-                {
-                    Logger.Info("bass.dll for 32-bit process not found, downloading...");
-                    client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x32/bass.dll", "bass.dll");
-                }
 
-                //Downloads the 64-bit BASS library if it doesn't exist
-                if (!File.Exists("bass.dll") && is64BitTerraria == true)
+                //Downloads the BASS library if it doesn't exist
+                if (!File.Exists("bass.dll"))
                 {
-                    Logger.Info("bass.dll for 64-bit process not found, downloading...");
+                    Logger.Info("bass.dll not found, downloading...");
+                    client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/1.4_port/Dependencies/bass.dll", "bass.dll");
+                }
+                //Downloads the Linux BASS library if it doesn't exist
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
                     client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x64/bass.dll", "bass.dll");
                 }
             }

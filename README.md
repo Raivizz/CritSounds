@@ -1,12 +1,27 @@
 # CritSounds 1.4
-Welcome to the experimental 1.4 tModLoader Crit Sounds repository!
+Welcome to the 1.4 tModLoader Crit Sounds repository!
 
-This repository contains a version of Crit Sounds tempered for the upcoming 1.4 tModLoader release.
+This repository contains a version of Crit Sounds tempered for the 1.4 tModLoader-stable branch.
 
-Currently uses in-game sounds instead of packed-in ones for non-custom crits.
+# Current features
 
-Custom crits seem to work absolutely fine.
+- Full support for built-in crit sounds
 
-Enumeration currently not updated for vanilla 1.4.
+- Support for custom crit sounds
 
-Additional codecs removed. As fun as implementing them was, the general consensus even amongst the tModLoader devs seems that it's an absolutely worthless addition.
+- Linux support (currently requires user intervention)
+
+- Enumeration removed, mod now depends entirely on DamageClass (custom damage class support to be added once major mods get ported to 1.4)
+
+- Major code rewrite once again, hopefully makes code more readable and less "wow noob-tier"
+
+- Additional codecs removed. As fun as implementing them was, the general consensus even amongst the tModLoader devs seems that it's an absolutely worthless addition.
+
+# Potential future plans
+
+- Implementation of BassFX for features like pitch shifting
+	- Mostly for parity with tMod's custom audio implementation having a pitch attribute
+	
+- Automated library installation for Linux
+	- By default, ManagedBass looks for libbass.so in /usr/lib. Perhaps there's alternative ways to implement user libraries? Needs research.
+	- Before that, proper informing of users is required. Arch users can just install libbass from the AUR (confirmed as working from my side), alternative distribs might need specific instructions.

@@ -3,6 +3,15 @@ Welcome to the 1.4 tModLoader Crit Sounds repository!
 
 This repository contains a version of Crit Sounds tempered for the 1.4 tModLoader-stable branch.
 
+Sorry, Dark Assassin, but there's no FLAC support here.
+
+# Removed features
+
+- No more "other dlls for all these crazy audio file formats it wants to support for some reason".
+	- Sorry, jopojelly! While it was fun to implement, I do agree that it was ultimately worthless. Much love for the indirect criticism, though!
+	
+- Enumeration removed, mod now depends entirely on DamageClass (custom damage class support to be added once major mods get ported to 1.4)
+
 # Current features
 
 - Full support for built-in crit sounds
@@ -11,11 +20,7 @@ This repository contains a version of Crit Sounds tempered for the 1.4 tModLoade
 
 - Linux support (currently requires user intervention)
 
-- Enumeration removed, mod now depends entirely on DamageClass (custom damage class support to be added once major mods get ported to 1.4)
-
 - Major code rewrite once again, hopefully makes code more readable and less "wow noob-tier"
-
-- Additional codecs removed. As fun as implementing them was, the general consensus even amongst the tModLoader devs seems that it's an absolutely worthless addition.
 
 # Potential future plans
 

@@ -54,6 +54,5 @@ namespace CritSounds
         [Tooltip("Volume of custom generic damage type weapon crits")]
         [DefaultValue(1f)]
         public float Mod_TypeGeneric_Volume = 1f;
-
     }
 }

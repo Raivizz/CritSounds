@@ -6,25 +6,26 @@ namespace CritSounds
 {
     public class CritModdingDirectories
     {
-        private readonly string CritModFolder = Main.SavePath + Path.DirectorySeparatorChar.ToString() + 
-                                                "Crit Sounds";
+        private readonly string CritModFolder =        Main.SavePath + Path.DirectorySeparatorChar.ToString() + 
+                                                       "Crit Sounds";
 
         //Melee stab crits - path
         internal readonly string MeleeStabCrits_Path = Main.SavePath + Path.DirectorySeparatorChar.ToString() +
                                                        "Crit Sounds" + Path.DirectorySeparatorChar.ToString() +
-                                                       "Custom" + Path.DirectorySeparatorChar.ToString() + "Melee Stab";
+                                                       "Custom" + Path.DirectorySeparatorChar.ToString() + 
+                                                       "Melee Stab";
 
         //Type ranged crits - path
         internal readonly string TypeRangedCrits_Path = Main.SavePath + Path.DirectorySeparatorChar.ToString() +
-                                                        "Crit Sounds" + Path.DirectorySeparatorChar.ToString() +
-                                                        "Custom" + Path.DirectorySeparatorChar.ToString() +
-                                                        "Ranged Projectile";
+                                                       "Crit Sounds" + Path.DirectorySeparatorChar.ToString() +
+                                                       "Custom" + Path.DirectorySeparatorChar.ToString() +
+                                                       "Ranged Projectile";
 
         //Type throwing crits - path
         internal readonly string TypeThrowingCrits_Path = Main.SavePath + Path.DirectorySeparatorChar.ToString() +
-                                                          "Crit Sounds" + Path.DirectorySeparatorChar.ToString() +
-                                                          "Custom" + Path.DirectorySeparatorChar.ToString() +
-                                                          "Throwing Projectile";
+                                                       "Crit Sounds" + Path.DirectorySeparatorChar.ToString() +
+                                                       "Custom" + Path.DirectorySeparatorChar.ToString() +
+                                                       "Throwing Projectile";
 
         //Type magic crits - path
         internal readonly string TypeMagicCrits_Path = Main.SavePath + Path.DirectorySeparatorChar.ToString() +
@@ -40,15 +41,15 @@ namespace CritSounds
 
         //Type summon crits - path
         internal readonly string TypeSummonCrits_Path = Main.SavePath + Path.DirectorySeparatorChar.ToString() +
-                                                        "Crit Sounds" + Path.DirectorySeparatorChar.ToString() +
-                                                        "Custom" + Path.DirectorySeparatorChar.ToString() +
-                                                        "Summon Projectile";
+                                                       "Crit Sounds" + Path.DirectorySeparatorChar.ToString() +
+                                                       "Custom" + Path.DirectorySeparatorChar.ToString() +
+                                                       "Summon Projectile";
 
         //Type generic crits - path
         internal readonly string TypeGenericCrits_Path = Main.SavePath + Path.DirectorySeparatorChar.ToString() +
-                                                         "Crit Sounds" + Path.DirectorySeparatorChar.ToString() +
-                                                         "Custom" + Path.DirectorySeparatorChar.ToString() +
-                                                         "Generic Projectile";
+                                                       "Crit Sounds" + Path.DirectorySeparatorChar.ToString() +
+                                                       "Custom" + Path.DirectorySeparatorChar.ToString() +
+                                                       "Generic Projectile";
 
         public void CreateDirectories()
         {

@@ -18,7 +18,6 @@ namespace CritSounds
         private int _meleeCritsStream;
         private int _summonCritsStream;
         private int _genericCritsStream;
-
         public class CritSfxHandler : ModPlayer
         {
             //Defines lists which are later used to contain file paths of all custom sounds
@@ -35,13 +34,13 @@ namespace CritSounds
                 CritModdingDirectories csDirFill = new();
 
                 //Fills the previously-defined lists with path files to all custom sounds
-                _meleeStabCritsFiles = new List<string>(Directory.GetFiles(csDirFill.MeleeStabCrits_Path));
-                _rangedCritsFiles = new List<string>(Directory.GetFiles(csDirFill.TypeRangedCrits_Path));
-                _throwingCritsFiles = new List<string>(Directory.GetFiles(csDirFill.TypeThrowingCrits_Path));
-                _magicCritsFiles = new List<string>(Directory.GetFiles(csDirFill.TypeMagicCrits_Path));
-                _meleeCritsFiles = new List<string>(Directory.GetFiles(csDirFill.TypeMeleeCrits_Path));
-                _summonCritsFiles = new List<string>(Directory.GetFiles(csDirFill.TypeSummonCrits_Path));
-                _genericCritsFiles = new List<string>(Directory.GetFiles(csDirFill.TypeGenericCrits_Path));
+                _meleeStabCritsFiles =  new List<string>(Directory.GetFiles(csDirFill.MeleeStabCrits_Path));
+                _rangedCritsFiles =     new List<string>(Directory.GetFiles(csDirFill.TypeRangedCrits_Path));
+                _throwingCritsFiles =   new List<string>(Directory.GetFiles(csDirFill.TypeThrowingCrits_Path));
+                _magicCritsFiles =      new List<string>(Directory.GetFiles(csDirFill.TypeMagicCrits_Path));
+                _meleeCritsFiles =      new List<string>(Directory.GetFiles(csDirFill.TypeMeleeCrits_Path));
+                _summonCritsFiles =     new List<string>(Directory.GetFiles(csDirFill.TypeSummonCrits_Path));
+                _genericCritsFiles =    new List<string>(Directory.GetFiles(csDirFill.TypeGenericCrits_Path));
             }
 
             public override void OnEnterWorld(Player player)
@@ -70,7 +69,7 @@ namespace CritSounds
             public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
             {
                 StreamType st = new();
-                
+
                 bool meleeStabCritsEnabled = ModContent.GetInstance<CritSoundsConfig>().MeleeStabCrits_Enabled;
 
                 if (crit && meleeStabCritsEnabled && item.type != ItemID.TheAxe)
@@ -93,11 +92,9 @@ namespace CritSounds
                     if (_meleeStabCritsFiles.Count != 0)
                     {
                         _ = new StreamType()._meleeStabCritsStream;
-                        st._meleeStabCritsStream =
-                            Bass.CreateStream(_meleeStabCritsFiles[new Random().Next(_meleeStabCritsFiles.Count)]);
+                        st._meleeStabCritsStream = Bass.CreateStream(_meleeStabCritsFiles[new Random().Next(_meleeStabCritsFiles.Count)]);
 
-                        Bass.ChannelSetAttribute(st._meleeStabCritsStream, ChannelAttribute.Volume,
-                            meleeStabCritsVolume);
+                        Bass.ChannelSetAttribute(st._meleeStabCritsStream, ChannelAttribute.Volume, meleeStabCritsVolume);
                         Bass.ChannelPlay(st._meleeStabCritsStream);
                     }
                 }
@@ -113,7 +110,7 @@ namespace CritSounds
             public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
             {
                 StreamType st = new();
-                
+
                 bool projectileCritsEnabled = ModContent.GetInstance<CritSoundsConfig>().ProjectileCrits_Enabled;
 
                 if (crit && projectileCritsEnabled)
@@ -121,7 +118,7 @@ namespace CritSounds
                     if (proj.DamageType == DamageClass.Ranged)
                     {
                         float rangedVolume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeRanged_Volume;
-                        
+
                         if (_rangedCritsFiles.Count == 0)
                         {
                             Random randomNumber = new();
@@ -133,9 +130,8 @@ namespace CritSounds
                         if (_rangedCritsFiles.Count != 0)
                         {
                             _ = new StreamType()._rangedCritsStream;
-                            st._rangedCritsStream =
-                                Bass.CreateStream(_rangedCritsFiles[new Random().Next(_rangedCritsFiles.Count)]);
-                            
+                            st._rangedCritsStream = Bass.CreateStream(_rangedCritsFiles[new Random().Next(_rangedCritsFiles.Count)]);
+
                             //Introduction of hard limits to the position of the damaged enemy so that BASS doesn't reset itself to 0
                             var critPosition = (target.position.X - Player.position.X) / (Main.screenWidth / 2);
                             switch (critPosition)
@@ -151,8 +147,7 @@ namespace CritSounds
                                     break;
                             }
 
-                            Bass.ChannelSetAttribute(st._rangedCritsStream, ChannelAttribute.Volume,
-                                rangedVolume);
+                            Bass.ChannelSetAttribute(st._rangedCritsStream, ChannelAttribute.Volume, rangedVolume);
                             Bass.ChannelPlay(st._rangedCritsStream);
                         }
                         else
@@ -164,7 +159,7 @@ namespace CritSounds
                     if (proj.DamageType == DamageClass.Throwing)
                     {
                         float throwingVolume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeThrowing_Volume;
-                        
+
                         if (_throwingCritsFiles.Count == 0)
                         {
                             Random randomNumber = new();
@@ -176,9 +171,8 @@ namespace CritSounds
                         if (_throwingCritsFiles.Count != 0)
                         {
                             _ = new StreamType()._throwingCritsStream;
-                            st._throwingCritsStream =
-                                Bass.CreateStream(_throwingCritsFiles[new Random().Next(_throwingCritsFiles.Count)]);
-                            
+                            st._throwingCritsStream = Bass.CreateStream(_throwingCritsFiles[new Random().Next(_throwingCritsFiles.Count)]);
+
                             var critPosition = (target.position.X - Player.position.X) / (Main.screenWidth / 2);
                             switch (critPosition)
                             {
@@ -189,8 +183,7 @@ namespace CritSounds
                                     Bass.ChannelSetAttribute(st._throwingCritsStream, ChannelAttribute.Pan, -1);
                                     break;
                                 case > -1 and < 1:
-                                    Bass.ChannelSetAttribute(st._throwingCritsStream, ChannelAttribute.Pan,
-                                        critPosition);
+                                    Bass.ChannelSetAttribute(st._throwingCritsStream, ChannelAttribute.Pan, critPosition);
                                     break;
                             }
 
@@ -206,7 +199,7 @@ namespace CritSounds
                     if (proj.DamageType == DamageClass.Magic)
                     {
                         var magicVolume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeMagic_Volume;
-                        
+
                         if (_magicCritsFiles.Count == 0)
                         {
                             Random randomNumber = new();
@@ -218,8 +211,7 @@ namespace CritSounds
                         if (_magicCritsFiles.Count != 0)
                         {
                             _ = new StreamType()._magicCritsStream;
-                            st._magicCritsStream =
-                                Bass.CreateStream(_magicCritsFiles[new Random().Next(_magicCritsFiles.Count)]);
+                            st._magicCritsStream = Bass.CreateStream(_magicCritsFiles[new Random().Next(_magicCritsFiles.Count)]);
 
                             var critPosition = (target.position.X - Player.position.X) / (Main.screenWidth / 2);
                             switch (critPosition)
@@ -247,7 +239,7 @@ namespace CritSounds
                     if (proj.DamageType == DamageClass.Melee)
                     {
                         float meleeVolume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeMelee_Volume;
-                        
+
                         if (_meleeCritsFiles.Count == 0)
                         {
                             Random randomNumber = new();
@@ -259,9 +251,8 @@ namespace CritSounds
                         if (_meleeCritsFiles.Count != 0)
                         {
                             _ = new StreamType()._meleeCritsStream;
-                            st._meleeCritsStream =
-                                Bass.CreateStream(_meleeCritsFiles[new Random().Next(_meleeCritsFiles.Count)]);
-                            
+                            st._meleeCritsStream = Bass.CreateStream(_meleeCritsFiles[new Random().Next(_meleeCritsFiles.Count)]);
+
                             var critPosition = (target.position.X - Player.position.X) / (Main.screenWidth / 2);
                             switch (critPosition)
                             {
@@ -288,7 +279,7 @@ namespace CritSounds
                     if (proj.DamageType == DamageClass.Summon)
                     {
                         float summonVolume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeSummon_Volume;
-                        
+
                         if (_summonCritsFiles.Count == 0)
                         {
                             Random randomNumber = new();
@@ -300,9 +291,8 @@ namespace CritSounds
                         if (_summonCritsFiles.Count != 0)
                         {
                             _ = new StreamType()._summonCritsStream;
-                            st._summonCritsStream =
-                                Bass.CreateStream(_summonCritsFiles[new Random().Next(_summonCritsFiles.Count)]);
-                            
+                            st._summonCritsStream = Bass.CreateStream(_summonCritsFiles[new Random().Next(_summonCritsFiles.Count)]);
+
 
                             var critPosition = (target.position.X - Player.position.X) / (Main.screenWidth / 2);
                             switch (critPosition)
@@ -330,7 +320,7 @@ namespace CritSounds
                     if (proj.DamageType == DamageClass.Generic || proj.DamageType == DamageClass.NoScaling)
                     {
                         float genericVolume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeGeneric_Volume;
-                        
+
                         if (_genericCritsFiles.Count == 0)
                         {
                             Random randomNumber = new();
@@ -342,9 +332,8 @@ namespace CritSounds
                         if (_genericCritsFiles.Count != 0)
                         {
                             _ = new StreamType()._genericCritsStream;
-                            st._genericCritsStream =
-                                Bass.CreateStream(_genericCritsFiles[new Random().Next(_genericCritsFiles.Count)]);
-                            
+                            st._genericCritsStream = Bass.CreateStream(_genericCritsFiles[new Random().Next(_genericCritsFiles.Count)]);
+
                             var critPosition = (target.position.X - Player.position.X) / (Main.screenWidth / 2);
                             switch (critPosition)
                             {
@@ -355,8 +344,7 @@ namespace CritSounds
                                     Bass.ChannelSetAttribute(st._genericCritsStream, ChannelAttribute.Pan, -1);
                                     break;
                                 case > -1 and < 1:
-                                    Bass.ChannelSetAttribute(st._genericCritsStream, ChannelAttribute.Pan,
-                                        critPosition);
+                                    Bass.ChannelSetAttribute(st._genericCritsStream, ChannelAttribute.Pan, critPosition);
                                     break;
                             }
 

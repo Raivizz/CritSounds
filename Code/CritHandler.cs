@@ -317,7 +317,7 @@ namespace CritSounds
                         }
                     }
 
-                    if (proj.DamageType == DamageClass.Generic || proj.DamageType == DamageClass.NoScaling)
+                    if (proj.DamageType == DamageClass.Generic)
                     {
                         float genericVolume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeGeneric_Volume;
 

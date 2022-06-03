@@ -54,5 +54,10 @@ namespace CritSounds
         [Tooltip("Volume of custom generic damage type weapon crits")]
         [DefaultValue(1f)]
         public float Mod_TypeGeneric_Volume = 1f;
+
+        [Label("Custom Egg 01 Crits - Volume")]
+        [Tooltip("Volume of custom Egg 01 weapon crits")]
+        [DefaultValue(1f)]
+        public float Mod_Egg01_Volume = 1f;
     }
 }

@@ -21,9 +21,6 @@ This repository contains a version of Crit Sounds tempered for the 1.4 tModLoade
 
 # Potential future plans
 
-- Implementation of BassFX for features like pitch shifting
-	- Mostly for parity with tMod's custom audio implementation having a pitch attribute
-	
 - Automated library installation for Linux
 	- By default, ManagedBass looks for libbass.so in /usr/lib. Perhaps there's alternative ways to implement user libraries? Needs research.
 	- Before that, proper informing of users is required. Arch users can just install libbass from the AUR (confirmed as working from my side), alternative distribs might need specific instructions.

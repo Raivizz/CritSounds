@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using Terraria.Audio;
 using Terraria.ModLoader;
 
 namespace CritSounds
@@ -13,8 +14,8 @@ namespace CritSounds
         private readonly SHA256 _sha256 = SHA256.Create();
 
         //SHA256 hash
-        private const string Sha256BassWin64 = "4bbb323f48fa7ea549abd59ecfc30e71b574d20f52e295b7e3ebf19f07f53efe";
-//      private const string Sha256BassLinux = "5615970f4f76dd9bc6bee16d3a8f37d57762b13326f7ea921b146c8b659f0bdd";
+          private const string Sha256BassWin64 = "4bbb323f48fa7ea549abd59ecfc30e71b574d20f52e295b7e3ebf19f07f53efe";
+        //private const string Sha256BassLinux = "5615970f4f76dd9bc6bee16d3a8f37d57762b13326f7ea921b146c8b659f0bdd";
 
         //Hash calculation stuff
         private byte[] GetHashSha256(string filename)
@@ -86,6 +87,53 @@ namespace CritSounds
                 }
             }
             Bass.Init();
+        }
+
+        // Initiates all of the sound styles used for the built-in crit sounds
+        public static readonly SoundStyle MeleeStabCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/MeleeStab/MeleeStab_Crit", 4)
+        {
+            PitchRange = (-0.25f, 0.5f),
+            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_MeleeStab_Volume
+        };
+        public static readonly SoundStyle TypeRangedCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeRanged/Type_Ranged", 5)
+        {
+            PitchRange = (-0.25f, 0.5f),
+            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeRanged_Volume
+        };
+        public static readonly SoundStyle TypeThrowingCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit", 4)
+        {
+            PitchRange = (-0.25f, 0.5f),
+            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeThrowing_Volume
+        };
+        public static readonly SoundStyle TypeMagicCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeMagic/Magic_Crit", 4)
+        {
+            PitchRange = (-0.25f, 0.5f),
+            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeMagic_Volume
+        };
+        public static readonly SoundStyle TypeMeleeCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeMelee/Melee_Crit", 4)
+        {
+            PitchRange = (-0.25f, 0.5f),
+            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeMelee_Volume
+        };
+        public static readonly SoundStyle TypeSummonCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeSummon/Summon_Crit", 4)
+        {
+            PitchRange = (-0.25f, 0.5f),
+            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeSummon_Volume
+        };
+        public static readonly SoundStyle TypeGenericCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeGeneric/Generic_Crit", 6)
+        {
+            PitchRange = (-0.25f, 0.5f),
+            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeGeneric_Volume
+        };
+        public static readonly SoundStyle Egg01Crits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Eggs/EggSet01/ES1_", 18)
+        {
+            PitchRange = (-0.25f, 0.5f),
+            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_Egg01_Volume
+        };
+
+        public override void Unload()
+        {
+            base.Unload();
+        }
     }
-}
 }

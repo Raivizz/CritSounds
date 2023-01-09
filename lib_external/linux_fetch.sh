@@ -1,11 +1,10 @@
 #!/bin/bash
 
 tempDir="/tmp/bass24-temp"
-cpuArchitecture=`uname -m`
+cpuArchitecture=$(uname -m)
 
 zipUrls=(
-  "http://www.un4seen.com/download.php?bass24-linux"
-  "http://www.un4seen.com/download.php?bassmix24-linux"
+  "https://www.un4seen.com/files/bass24-linux.zip"
 )
 zipDirectory="."
 
@@ -13,7 +12,6 @@ if [[ $cpuArchitecture == arm* ]]
 then
   zipUrls=(
     "http://www.un4seen.com/stuff/bass24-linux-arm.zip"
-    "http://www.un4seen.com/stuff/bass_aac-linux-arm.zip"
   )
   zipDirectory="hardfp"
 fi
@@ -22,7 +20,7 @@ fi
 mkdir $tempDir
 
 # Go to temp
-cd $tempDir
+cd $tempDir || exit
 
 # Download zip files and extract
 for zipUrl in "${zipUrls[@]}"
@@ -33,17 +31,17 @@ do
 done
 
 # Go to zip directory
-cd $zipDirectory
+cd $zipDirectory || exit
 
 # Install .so files
 for file in $(find . -maxdepth 1 -name "*.so"); do
   echo "Installing $file file ..."
 
-  sudo cp $file /usr/local/lib
+  sudo cp "$file" /usr/local/lib
 
   echo "/usr/local/lib/$file"
 
-  sudo chmod a+rx /usr/local/lib/$file
+  sudo chmod a+rx /usr/local/lib/"$file"
 
   sudo ldconfig
 done

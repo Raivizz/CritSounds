@@ -10,8 +10,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using ManagedBass;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Exceptions;
+using Terraria.ModLoader.UI;
 using System.Diagnostics;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using On.Terraria;
+using Terraria.UI;
 
 namespace CritSounds;
 
@@ -32,10 +36,13 @@ internal class CritSounds : Mod
     //SHA256 hash
     private const string Sha256BassWin64 = "94ff6f6d935292b6664779b06ddd6a63db274c962dc15e18723f9a46c5529d4f";
     private const string BassPath = "dotnet/6.0.0/bass.dll";
-    private readonly Uri bassWin64Uri = new("https://github.com/Raivizz/CritSounds/blob/1.4_port/lib_external/x64/bass.dll");
-    private readonly Uri bassLinuxScriptUri = new("https://github.com/Raivizz/CritSounds/blob/1.4_port/lib_external/linux_fetch.sh");
+    private const string LinuxScriptPath = "dotnet/6.0.0/linux_fetch.sh";
+    private readonly Uri bassWin64Uri = new("https://github.com/Raivizz/CritSounds/raw/1.4_port/lib_external/x64/bass.dll");
+    private readonly Uri bassLinuxScriptUri = new("https://raw.githubusercontent.com/Raivizz/CritSounds/1.4_port/lib_external/linux_fetch.sh");
 
     private readonly SHA256 _sha256 = SHA256.Create();
+
+    public event Utils.orig_ShowFancyErrorMessage LinuxWarning;
 
     protected CritSounds()
     {
@@ -68,10 +75,30 @@ internal class CritSounds : Mod
         return bytes.Aggregate("", (current, b) => current + b.ToString("x2"));
     }
 
+    static string ExecuteBashCommand(string command)
+    {
+        command = command.Replace("\"", "\"\"");
+        var proc = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "/bin/pkexec",
+                Arguments = "/bin/bash -c \"" + command + "\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                CreateNoWindow = true
+            }
+        };
+        proc.Start();
+        proc.WaitForExit();
+
+        return proc.StandardOutput.ReadToEnd();
+    }
+
     public override void Load()
     {
         var TasksBASS = new List<Task>();
-
+        
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
         {
             StreamType.CritSfxHandler csh = new();
@@ -122,49 +149,23 @@ internal class CritSounds : Mod
                             Bass.Init();
                             break;
                         case TaskStatus.Faulted:
-                            throw new Exception("BASS library has failed to download. Please check your Internet connection and try again.");
+                            throw new Exception(
+                                "BASS library has failed to download. Please check your Internet connection and try again.");
                     }
                 }
             }
         }
-            //Fetches a Bash script that downloads required BASS libraries.
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return;
-            if (!File.Exists("/usr/lib/libbass.so"))
-            {
-                TasksBASS.Add(Task.Run(() => FetchFile(bassLinuxScriptUri, "script.sh")));
-
-                var t = Task.WhenAny(TasksBASS);
-                try
-                {
-                    t.Wait();
-                }
-                catch (Exception e)
-                {
-                    Logger.Error(e);
-                }
-
-                switch (t.Status)
-                {
-                    case TaskStatus.RanToCompletion:
-                        Process bassScript = new();
-                        Logger.Info("BASS script has been downloaded succesfully. Running...");
-
-                        bassScript.StartInfo.FileName = @"script.sh";
-                        bassScript.Start();
-                        bassScript.WaitForExit();
-
-                        Bass.Init();
-                        break;
-                    case TaskStatus.Faulted:
-                        throw new Exception(
-                            "BASS script for Linux has failed to download. Please check your Internet connection and try again.");
-                }
-            }
-            else Bass.Init();
-    }
-
-    public override void Unload()
-    {
-        Bass.Free();
+        //Fetches a Bash script that downloads required BASS library file.
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return;
+        if (!File.Exists("/usr/lib/libbass.so"))
+        {
+            Logger.Info("Running remote BASH script...");
+                var BassScript =
+                    ExecuteBashCommand(
+                        "curl -fsSL https://raw.githubusercontent.com/Raivizz/CritSounds/1.4_port/lib_external/linux_fetch.sh | sh");
+                Logger.Info(BassScript);
+                Bass.Init();
+        }
+        Bass.Init();
     }
 }

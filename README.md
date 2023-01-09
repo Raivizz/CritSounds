@@ -7,7 +7,7 @@ This repository contains a version of Crit Sounds tempered for the 1.4 tModLoade
 
 - No more "other dlls for all these crazy audio file formats".
 	
-- Enumeration removed, mod now depends entirely on DamageClass (custom damage class support to be added once major mods get ported to 1.4)
+- Enumeration removed, mod now depends entirely on DamageClass
 
 # Current features
 

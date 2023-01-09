@@ -1,5 +1,4 @@
-﻿using CritSounds.Code;
-using ManagedBass;
+﻿using ManagedBass;
 using System;
 using System.Collections.Generic;
 using System.IO;

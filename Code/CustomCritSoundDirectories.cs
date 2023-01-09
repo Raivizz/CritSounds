@@ -1,12 +1,11 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using Terraria;
 
 namespace CritSounds
 {
     public class CritModdingDirectories
     {
-        private readonly string CritModFolder =        Main.SavePath + Path.DirectorySeparatorChar.ToString() + 
+        internal readonly string CritModFolder =        Main.SavePath + Path.DirectorySeparatorChar.ToString() + 
                                                        "Crit Sounds";
 
         //Melee stab crits - path

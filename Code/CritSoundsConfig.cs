@@ -4,7 +4,7 @@ using Terraria.ModLoader.Config;
 namespace CritSounds
 {
     [Label("Crit Sounds Configuration")]
-    public class CritSoundsConfig : ModConfig
+    public abstract class CritSoundsConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
@@ -55,9 +55,9 @@ namespace CritSounds
         [DefaultValue(1f)]
         public float Mod_TypeGeneric_Volume = 1f;
 
-        [Label("Custom Egg 01 Crits - Volume")]
-        [Tooltip("Volume of custom Egg 01 weapon crits")]
-        [DefaultValue(1f)]
+        [Label("Custom Egg 01 Crits - Volume")] 
+        [Tooltip("Volume of custom Egg 01 weapon crits")] 
+        [DefaultValue(1f)]  
         public float Mod_Egg01_Volume = 1f;
     }
 }

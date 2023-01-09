@@ -1,139 +1,170 @@
-using ManagedBass;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using Terraria.Audio;
+using System.Threading;
+using System.Threading.Tasks;
+using ManagedBass;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Exceptions;
+using System.Diagnostics;
 
-namespace CritSounds
+namespace CritSounds;
+
+// A HTTP Client Utils extension that simplifies file downloading.
+// Taken from https://stackoverflow.com/a/66270371
+public static class HttpClientUtils
 {
-    internal class CritSounds : Mod
+    public static async Task DownloadFileTaskAsync(this HttpClient client, Uri uri, string FileName)
     {
-        private readonly SHA256 _sha256 = SHA256.Create();
+        await using var s = await client.GetStreamAsync(uri);
+        await using var fs = new FileStream(FileName, FileMode.CreateNew);
+        await s.CopyToAsync(fs);
+    }
+}
 
-        //SHA256 hash
-          private const string Sha256BassWin64 = "4bbb323f48fa7ea549abd59ecfc30e71b574d20f52e295b7e3ebf19f07f53efe";
-        //private const string Sha256BassLinux = "5615970f4f76dd9bc6bee16d3a8f37d57762b13326f7ea921b146c8b659f0bdd";
+internal class CritSounds : Mod
+{
+    //SHA256 hash
+    private const string Sha256BassWin64 = "94ff6f6d935292b6664779b06ddd6a63db274c962dc15e18723f9a46c5529d4f";
+    private const string BassPath = "dotnet/6.0.0/bass.dll";
+    private readonly Uri bassWin64Uri = new("https://github.com/Raivizz/CritSounds/blob/1.4_port/lib_external/x64/bass.dll");
+    private readonly Uri bassLinuxScriptUri = new("https://github.com/Raivizz/CritSounds/blob/1.4_port/lib_external/linux_fetch.sh");
 
-        //Hash calculation stuff
-        private byte[] GetHashSha256(string filename)
+    private readonly SHA256 _sha256 = SHA256.Create();
+
+    protected CritSounds()
+    {
+        CritModdingDirectories cs = new();
+        cs.CreateDirectories();
+    }
+
+    //Hash calculation stuff
+    private IEnumerable<byte> GetHashSha256(string filename)
+    {
+        using var stream = File.OpenRead(filename);
+        return _sha256.ComputeHash(stream);
+    }
+
+    private async void FetchFile(Uri uri, string fileName)
+    {
+        HttpClient client = new();
+        try
         {
-            using FileStream stream = File.OpenRead(filename);
-            return _sha256.ComputeHash(stream);
+            await client.DownloadFileTaskAsync(uri, fileName);
         }
-
-        private static string BytesToString(byte[] bytes)
+        catch (HttpRequestException e)
         {
-            string result = "";
-            foreach (var b in bytes)
+            Logger.Error("Fetching DLL failed:" + e.Message);
+        }
+    }
+
+    private static string BytesToString(IEnumerable<byte> bytes)
+    {
+        return bytes.Aggregate("", (current, b) => current + b.ToString("x2"));
+    }
+
+    public override void Load()
+    {
+        var TasksBASS = new List<Task>();
+
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
+        {
+            StreamType.CritSfxHandler csh = new();
+
+            csh.CheckDirectoriesForMods();
+
+            //If bass.dll exists, checks for the file hash and re-downloads it if the hash check fails.
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                result += b.ToString("x2");
-            }
-
-            return result;
-        }
-
-        public CritSounds()
-        {
-            CritModdingDirectories cs = new();
-            cs.CreateDirectories();
-        }
-
-        public override void Load()
-        {
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            using (WebClient client = new())
-            {
-                StreamType.CritSfxHandler csh = new();
-
-                csh.CheckDirectoriesForMods();
-
-                //If bass.dll exists, checks for the file hash and re-downloads it if the hash check fails.
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                if (File.Exists(BassPath))
                 {
-                    if (File.Exists("bass.dll"))
+                    if (BytesToString(GetHashSha256(BassPath)) == Sha256BassWin64)
                     {
-                        if (BytesToString(GetHashSha256("bass.dll")) == Sha256BassWin64)
-                        {
-                            Logger.Info("bass.dll hash code matches");
+                        Logger.Info("bass.dll hash code matches");
+                        Bass.Init();
+                    }
+                    else
+                    {
+                        Logger.Info("bass.dll does not match hash, re-downloading...");
+                        File.Delete(BassPath);
+                    }
+                }
+                //If bass.dll was not found, asynchronously downloads it and initializes it. Otherwise returns exception.
+                else
+                {
+                    TasksBASS.Add(Task.Run(() => FetchFile(bassWin64Uri, BassPath)));
+
+                    var t = Task.WhenAny(TasksBASS);
+                    try
+                    {
+                        t.Wait();
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error(e);
+                    }
+
+                    switch (t.Status)
+                    {
+                        case TaskStatus.RanToCompletion:
+                            Logger.Info("BASS library has been downloaded succesfully.");
+
+                            //Puts the thread to sleep for 1000 ms because for whatever reason it refuses to acknowledge the existence of the library file.
+                            //Could be due to IO? Might have to investigate.
+                            //Why this fixes it, I do not know. hashtag slav jank, amirite.
+                            Thread.Sleep(1000);
+
                             Bass.Init();
-                        }
-                        else
-                        {
-                            Logger.Info("bass.dll does not match hash, re-downloading...");
-                            File.Delete("bass.dll");
-                            client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x64/bass.dll", "bass.dll");
-                        }
-                    }
-
-                    //Downloads the BASS library if it doesn't exist
-                    if (!File.Exists("bass.dll"))
-                    {
-                        Logger.Info("bass.dll not found, downloading...");
-                        client.DownloadFile("https://github.com/Raivizz/CritSounds/raw/master/Dependencies/x64/bass.dll", "bass.dll");
-                    }
-                }
-
-                //Warns Linux users about requiring manual intervention for the BASS library file
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-                {
-                    if (!File.Exists("/usr/lib/libbass.so"))
-                    {
-                        throw new InvalidOperationException("/usr/lib/libbass.so not found. Linux users have to manually install the libbass library. Please see Crit Sounds' Workshop page for more info.");
+                            break;
+                        case TaskStatus.Faulted:
+                            throw new Exception("BASS library has failed to download. Please check your Internet connection and try again.");
                     }
                 }
             }
-            Bass.Init();
         }
+            //Fetches a Bash script that downloads required BASS libraries.
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return;
+            if (!File.Exists("/usr/lib/libbass.so"))
+            {
+                TasksBASS.Add(Task.Run(() => FetchFile(bassLinuxScriptUri, "script.sh")));
 
-        // Initiates all of the sound styles used for the built-in crit sounds
-        public static readonly SoundStyle MeleeStabCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/MeleeStab/MeleeStab_Crit", 4)
-        {
-            PitchRange = (-0.25f, 0.5f),
-            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_MeleeStab_Volume
-        };
-        public static readonly SoundStyle TypeRangedCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeRanged/Type_Ranged", 5)
-        {
-            PitchRange = (-0.25f, 0.5f),
-            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeRanged_Volume
-        };
-        public static readonly SoundStyle TypeThrowingCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeThrowing/Throwing_Crit", 4)
-        {
-            PitchRange = (-0.25f, 0.5f),
-            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeThrowing_Volume
-        };
-        public static readonly SoundStyle TypeMagicCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeMagic/Magic_Crit", 4)
-        {
-            PitchRange = (-0.25f, 0.5f),
-            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeMagic_Volume
-        };
-        public static readonly SoundStyle TypeMeleeCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeMelee/Melee_Crit", 4)
-        {
-            PitchRange = (-0.25f, 0.5f),
-            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeMelee_Volume
-        };
-        public static readonly SoundStyle TypeSummonCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeSummon/Summon_Crit", 4)
-        {
-            PitchRange = (-0.25f, 0.5f),
-            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeSummon_Volume
-        };
-        public static readonly SoundStyle TypeGenericCrits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Projectiles/TypeGeneric/Generic_Crit", 6)
-        {
-            PitchRange = (-0.25f, 0.5f),
-            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_TypeGeneric_Volume
-        };
-        public static readonly SoundStyle Egg01Crits_Sound = new($"{nameof(CritSounds)}/Sounds/Crits/Eggs/EggSet01/ES1_", 18)
-        {
-            PitchRange = (-0.25f, 0.5f),
-            Volume = ModContent.GetInstance<CritSoundsConfig>().Mod_Egg01_Volume
-        };
+                var t = Task.WhenAny(TasksBASS);
+                try
+                {
+                    t.Wait();
+                }
+                catch (Exception e)
+                {
+                    Logger.Error(e);
+                }
 
-        public override void Unload()
-        {
-            base.Unload();
-        }
+                switch (t.Status)
+                {
+                    case TaskStatus.RanToCompletion:
+                        Process bassScript = new();
+                        Logger.Info("BASS script has been downloaded succesfully. Running...");
+
+                        bassScript.StartInfo.FileName = @"script.sh";
+                        bassScript.Start();
+                        bassScript.WaitForExit();
+
+                        Bass.Init();
+                        break;
+                    case TaskStatus.Faulted:
+                        throw new Exception(
+                            "BASS script for Linux has failed to download. Please check your Internet connection and try again.");
+                }
+            }
+            else Bass.Init();
+    }
+
+    public override void Unload()
+    {
+        Bass.Free();
     }
 }

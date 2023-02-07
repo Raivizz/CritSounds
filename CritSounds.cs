@@ -10,12 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ManagedBass;
 using Terraria.ModLoader;
-using Terraria.ModLoader.UI;
 using System.Diagnostics;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using On.Terraria;
-using Terraria.UI;
 
 namespace CritSounds;
 
@@ -23,26 +18,27 @@ namespace CritSounds;
 // Taken from https://stackoverflow.com/a/66270371
 public static class HttpClientUtils
 {
-    public static async Task DownloadFileTaskAsync(this HttpClient client, Uri uri, string FileName)
+    public static async Task DownloadFileTaskAsync(this HttpClient client, Uri uri, string fileName)
     {
         await using var s = await client.GetStreamAsync(uri);
-        await using var fs = new FileStream(FileName, FileMode.CreateNew);
+        await using var fs = new FileStream(fileName, FileMode.CreateNew);
         await s.CopyToAsync(fs);
     }
 }
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal class CritSounds : Mod
 {
     //SHA256 hash
     private const string Sha256BassWin64 = "94ff6f6d935292b6664779b06ddd6a63db274c962dc15e18723f9a46c5529d4f";
     private const string BassPath = "dotnet/6.0.0/bass.dll";
+    private readonly Uri _bassWin64Uri = new("https://github.com/Raivizz/CritSounds/raw/1.4_port/lib_external/x64/bass.dll");
+/*
     private const string LinuxScriptPath = "dotnet/6.0.0/linux_fetch.sh";
-    private readonly Uri bassWin64Uri = new("https://github.com/Raivizz/CritSounds/raw/1.4_port/lib_external/x64/bass.dll");
-    private readonly Uri bassLinuxScriptUri = new("https://raw.githubusercontent.com/Raivizz/CritSounds/1.4_port/lib_external/linux_fetch.sh");
+    private readonly Uri _bassLinuxScriptUri = new("https://raw.githubusercontent.com/Raivizz/CritSounds/1.4_port/lib_external/linux_fetch.sh");
+*/
 
     private readonly SHA256 _sha256 = SHA256.Create();
-
-    public event Utils.orig_ShowFancyErrorMessage LinuxWarning;
 
     protected CritSounds()
     {
@@ -75,7 +71,7 @@ internal class CritSounds : Mod
         return bytes.Aggregate("", (current, b) => current + b.ToString("x2"));
     }
 
-    static string ExecuteBashCommand(string command)
+    private static string ExecuteBashCommand(string command)
     {
         command = command.Replace("\"", "\"\"");
         var proc = new Process
@@ -97,7 +93,7 @@ internal class CritSounds : Mod
 
     public override void Load()
     {
-        var TasksBASS = new List<Task>();
+        var tasksBass = new List<Task>();
         
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
         {
@@ -124,9 +120,9 @@ internal class CritSounds : Mod
                 //If bass.dll was not found, asynchronously downloads it and initializes it. Otherwise returns exception.
                 else
                 {
-                    TasksBASS.Add(Task.Run(() => FetchFile(bassWin64Uri, BassPath)));
+                    tasksBass.Add(Task.Run(() => FetchFile(_bassWin64Uri, BassPath)));
 
-                    var t = Task.WhenAny(TasksBASS);
+                    var t = Task.WhenAny(tasksBass);
                     try
                     {
                         t.Wait();
@@ -139,7 +135,7 @@ internal class CritSounds : Mod
                     switch (t.Status)
                     {
                         case TaskStatus.RanToCompletion:
-                            Logger.Info("BASS library has been downloaded succesfully.");
+                            Logger.Info("BASS library has been downloaded successfully.");
 
                             //Puts the thread to sleep for 1000 ms because for whatever reason it refuses to acknowledge the existence of the library file.
                             //Could be due to IO? Might have to investigate.
@@ -155,16 +151,19 @@ internal class CritSounds : Mod
                 }
             }
         }
-        //Fetches a Bash script that downloads required BASS library file.
         if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) return;
-        if (!File.Exists("/usr/lib/libbass.so"))
+        try {
+            if (!File.Exists("/usr/lib/libbass.so"))
+            {
+                Logger.Info("Running remote BASH script...");
+                var bassScript = ExecuteBashCommand(
+                    "curl -fsSL https://raw.githubusercontent.com/Raivizz/CritSounds/1.4_port/lib_external/linux_fetch.sh | sh");
+                Logger.Info(bassScript);
+            }
+            Bass.Init();
+        } catch (Exception ex)
         {
-            Logger.Info("Running remote BASH script...");
-                var BassScript =
-                    ExecuteBashCommand(
-                        "curl -fsSL https://raw.githubusercontent.com/Raivizz/CritSounds/1.4_port/lib_external/linux_fetch.sh | sh");
-                Logger.Info(BassScript);
-                Bass.Init();
+            Logger.Error($"An error occurred while trying to run the remote script: {ex.Message}");
         }
         Bass.Init();
     }

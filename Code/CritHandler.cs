@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+// ReSharper disable PossibleLossOfFraction
 
 namespace CritSounds;
 
@@ -56,31 +57,24 @@ public class StreamType
         //Melee hitbox (stab) crits
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
         {
-            StreamType st = new();
-
+            var st = new StreamType();
             var meleeStabCritsEnabled = ModContent.GetInstance<CritSoundsConfig>().MeleeStabCrits_Enabled;
-
-            if (crit && meleeStabCritsEnabled && item.type != ItemID.TheAxe)
+            if (!crit || !meleeStabCritsEnabled) return;
+            var meleeStabCritsVolume = ModContent.GetInstance<CritSoundsConfig>().Mod_MeleeStab_Volume;
+            if (item.type != ItemID.TheAxe)
             {
-                var meleeStabCritsVolume = ModContent.GetInstance<CritSoundsConfig>().Mod_MeleeStab_Volume;
-
-                //No mod files detected
                 if (_meleeStabCritsFiles.Count == 0)
                 {
                     SoundEngine.PlaySound(CritContainers.MeleeStabCritsSound, target.position);
-                }
-
-                //At least one mod file exists.
-                if (_meleeStabCritsFiles.Count != 0)
+                } 
+                else 
                 {
-                    _ = new StreamType()._meleeStabCritsStream;
                     st._meleeStabCritsStream = Bass.CreateStream(_meleeStabCritsFiles[new Random().Next(_meleeStabCritsFiles.Count)]);
-
                     Bass.ChannelSetAttribute(st._meleeStabCritsStream, ChannelAttribute.Volume, meleeStabCritsVolume);
                     Bass.ChannelPlay(st._meleeStabCritsStream);
                 }
             }
-            if (crit && meleeStabCritsEnabled && item.type == ItemID.TheAxe)
+            else 
             {
                 SoundEngine.PlaySound(CritContainers.Egg01CritsSound, target.position);
             }
@@ -88,8 +82,7 @@ public class StreamType
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
         {
-            StreamType st = new();
-
+            var st = new StreamType();
             var projectileCritsEnabled = ModContent.GetInstance<CritSoundsConfig>().ProjectileCrits_Enabled;
 
             if (!crit || !projectileCritsEnabled) return;
